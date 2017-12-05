@@ -74,6 +74,8 @@
         lookup cache used 256/65536 hits=882 misses=258
         finished...
 
+![image](https://yuncodeweb.oss-cn-hangzhou.aliyuncs.com/uploads/edward.yangx/public-docs/b9ea5662e866913efcaca28549d9f033/image.png)
+
 - **make repo-list: 列出当前工程引用的外部组件和它们的云端仓库地址**
 
         LITE-utils $ make repo-list
