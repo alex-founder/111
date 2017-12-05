@@ -39,34 +39,3 @@
     MAKE_SEGMENT := alink.mk
 
 则表示在每个编译单元中, 指导编译过程的片段文件不再是默认的`iot.mk`, 而是`alink.mk`
-
-## 定制单元测试
-
-如果你的工程含有配合编译系统的单元测试用例, 则可以在顶层`makefile`中写类似如下语句, 告诉编译系统如何在`make test`命令中执行它们, 并统计源码覆盖率
-
-    $(call Add_Coverage_Progs, utils-tests --list)
-    $(call Add_Coverage_Progs, utils-tests)
-    $(call End_Coverage_Progs)
-
-语法是:
-
-    $(call Add_Coverage_Progs, <program> <argument-list>)
-    ...
-    # <program> 是单元测试程序的名字
-    # <argument-list> 是单元测试程序对应的参数列表
-    ...
-    # 重复1-N次, 告诉编译系统依次执行所有的单元测试程序
-    ...
-    $(call End_Coverage_Progs)
-    # 告诉编译系统, 到这里为止单元测试程序列举完毕
-
-> 以上面的`LITE-utils`为例, 其中的`utils-tests`就是它的单元测试程序, 这是在编译单元`testsuites`中产生的一个`Linux`下可执行程序
-
-    $ cat testsuites/iot.mk -n
-         1  TARGET      := utils-tests
-         2  DEPENDS     += external/cut src
-         3  HDR_REFS    := src
-         4
-         5  LDFLAGS     += -llite-utils -llite-log -llite-cut
-
-为什么如上的一个简单`iot.mk`片段文件, 就能指导编译系统生成可执行程序`utils-tests`, 可以访问[**编译单元说明**](https://code.aliyun.com/edward.yangx/public-docs/wikis/build/build-system-units)
