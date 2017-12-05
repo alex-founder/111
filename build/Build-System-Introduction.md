@@ -14,55 +14,7 @@
 
 - **make test: 运行指定的测试集程序, 统计显示测试例的通过率和源代码的覆盖率**
 
-         LITE-utils $ make test
-         
-         ...
-         ...
-
-         [0] RUNNING './utils-tests --list' with './utils-tests'
-
-           [01] string.hexbuf_convert
-           [02] string.hexstr_convert
-           [03] string.format
-           [04] string.format_nstring
-           [05] string.format_nstring_ext
-           [06] string.always_failure
-
-         In total 6 case(s), matched 6 case(s)
-
-         [1] RUNNING './utils-tests' with './utils-tests'
-
-         TEST [01/06] string.hexbuf_convert .............................................. [SUCC]
-         TEST [02/06] string.hexstr_convert .............................................. [SUCC]
-         TEST [03/06] string.format ...................................................... [SUCC]
-         TEST [04/06] string.format_nstring .............................................. [SUCC]
-         TEST [05/06] string.format_nstring_ext .......................................... [SUCC]
-         TEST [06/06] string.always_failure .............................................. [FAIL]
-         ===========================================================================
-         FAIL LIST:
-           [01] string.always_failure in string_utils.c(246) expected [True]
-         ---------------------------------------------------------------------------
-         SUMMARY:
-              TOTAL:    6
-            SKIPPED:    0
-            MATCHED:    6
-               PASS:    5
-             FAILED:    1
-         ===========================================================================
-
-         Processing [/home/edward/srcs/iot-middleware/LITE-utils/output/Coverage] for Coverage Brief
-
-                Directory   Source File                 : Line Coverage            Function Coverage   
-
-                      src / string_utils.c              : [ 81.20%  ] (108/133)    [ 93.33%  ] (14/15)     
-               testsuites / utils_tests.c               : [ 77.77%  ] (7/9)        [ 100.00% ] (1/1)       
-                      cut / cut.c                       : [ 77.33%  ] (58/75)      [ 75.00%  ] (3/4)       
-                      src / mem_stats.c                 : [ 30.00%  ] (6/20)       [ 16.66%  ] (1/6)       
-                 LITE-log / lite-log.c                  : [ 23.46%  ] (23/98)      [ 60.00%  ] (6/10)      
-                      src / lite-utils_testsuites.c     : [ 0%      ] (0/63)       [ 0%      ] (0/3)       
-                      src / json_token.c                : [ 0%      ] (0/62)       [ 0%      ] (0/3)       
-                      src / json_parser.c               : [ 0%      ] (0/119)      [ 0%      ] (0/5)       
-                  example / utils-example.c             : [ 0%      ] (0/8)        [ 0%      ] (0/1)       
+![image](https://yuncodeweb.oss-cn-hangzhou.aliyuncs.com/uploads/edward.yangx/public-docs/52c806dd879f18cd7ea855a8549461f6/image.png)  
 
 - **make doc: 扫描源码目录中以`Doxygen`格式或者`Markdown`格式编写的注释, 在`html`目录产生帮助文档**
 
