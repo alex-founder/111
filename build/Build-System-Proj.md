@@ -19,7 +19,7 @@
 | `CROSS_PREFIX`        | 指定交叉编译工具链共有的前缀, 例如`CROSS_PREFIX := arm-none-eabi-`, 会导致编译系统使用`arm-none-eabi-gcc`和`arm-none-eabi-ar`, 以及`arm-none-eabi-strip`等 |
 | `OVERRIDE_CC`         | 当交叉工具链没有共有的前缀或者前缀不符合`prefix+gcc|ar|strip`类型时, 例如`armcc`, 可用`OVERRIDE_CC = armcc`单独指定C编译器 |
 | `OVERRIDE_AR`         | 当交叉工具链没有共有的前缀或者前缀不符合`prefix+gcc|ar|strip`类型时, 例如`armar`, 可用`OVERRIDE_AR = armar`单独指定库压缩器 |
-| `OVERRIDE_AR`         | 当交叉工具链没有共有的前缀或者前缀不符合`prefix+gcc|ar|strip`类型时, 例如`armcc`没有对应的strip程序, 可用`OVERRIDE_STRIP = true`单独指定strip程序不执行 |
+| `OVERRIDE_STRIP`      | 当交叉工具链没有共有的前缀或者前缀不符合`prefix+gcc|ar|strip`类型时, 例如`armcc`没有对应的strip程序, 可用`OVERRIDE_STRIP = true`单独指定strip程序不执行 |
 
 
 ## 定制单元测试
