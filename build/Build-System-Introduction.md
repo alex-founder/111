@@ -16,7 +16,9 @@
 
 # 如何开发
 
-* 访问[编译单元说明](https://code.aliyun.com/edward.yangx/public-docs/wikis/build/build-system-units)页面, 了解如何增删改查你自己的编译单元
+* 访问[**编译系统配置**](https://code.aliyun.com/edward.yangx/public-docs/wikis/build/build-system-config), 了解如何配置来影响编译系统的行为
+* 访问[**编译单元说明**](https://code.aliyun.com/edward.yangx/public-docs/wikis/build/build-system-units), 了解如何增删改查你自己的编译单元
+* 访问[**编译系统调试**](https://code.aliyun.com/edward.yangx/public-docs/wikis/build/build-system-debug), 了解在定制编译单元时, 如何自己调试
 
 # 高级命令
 
