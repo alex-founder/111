@@ -11,6 +11,12 @@
 | `make distclean`      | **清除一切编译过程产生的中间文件, 使当前目录仿佛和刚刚clone下来一样**             |
 | `make [all]`          | **使用默认的平台配置文件开始编译**                                                |
 | `make reconfig`       | **弹出多平台选择菜单, 用户可按数字键选择, 然后根据相应的硬件平台配置开始编译**    |
+| `make config`         | **显示当前被选择的平台配置文件**                                                  |
+| `make <directory>`    | **单独编译被<directory>指定的目录, 或者叫编译单元**                               |
+
+# 如何开发
+
+* 访问[编译单元说明](https://code.aliyun.com/edward.yangx/public-docs/wikis/build/build-system-units)页面, 了解如何增删改查你自己的编译单元
 
 # 高级命令
 
@@ -20,6 +26,58 @@
 | `make doc`            | **扫描源码目录中以`Doxygen`格式或者`Markdown`格式编写的注释, 在`html`目录产生帮助文档**   |
 | `make repo-list`      | **列出当前工程引用的外部组件和它们的云端仓库地址**                                        |
 | `make repo-update`    | **对所有引用到的外部组件, 用云端仓库更新本地仓库**                                        |
+
+# 组成部分
+
+    LITE-utils$ tree -A -L 1
+    .
+    +-- build-rules     # 编译系统核心
+    +-- example
+    +-- external
+    +-- makefile        # 工程的makefile
+    +-- packages
+    +-- project.mk      # 工程设置文件
+    +-- src
+    +-- testsuites
+
+> 以`LITE-utils`为例, 对整个编译过程需要知道的只有如上三个部分:
+
+| 组成部分      | 说明                                                                          |
+|---------------|-------------------------------------------------------------------------------|
+| `project.mk`  | 本工程的目录排布, 工程名称, 版本信息等, 可选                                  |
+| `makefile`    | 本工程的makefile, 基于`GNU Make`, 通常只含有极少的内容, 指定编译的范围, 必选  |
+| `build-rules` | 编译系统核心, 指定编译的规则, 不需要关注                                      |
+
+# 工作过程
+
+可以从一个简单的`makefile`样例看起
+
+     1  sinclude project.mk
+     2  sinclude $(CONFIG_TPL)
+     3
+     4  SUBDIRS += \
+     5      external/cut \
+     6      src \
+     7      example \
+     8      testsuites \
+     9
+    10  CFLAGS += -DUTILS_SELF_TEST
+    11
+    12  include $(RULE_DIR)/rules.mk
+
+0. 编译系统是基于`GNU Make`的简化系统, 所以工作过程的起点仍然是顶层的`makefile`
+1. 读取`project.mk`, 如果当前工程的目录排布和默认的不一样, 则用当前设置, 可选
+2. 读取`.config`文件, 这个文件其实是编译系统运行时所有输入的集合, 也称为*硬件平台配置文件*, 可选
+3. 读取`SUBDIRS`变量, 这个变量指定了编译的范围, 必选
+4. 读取`CFLAGS`或者`LDFLAGS`等变量, 顶层`makefile`的变量会被应用到每个编译单元的编译和链接, 可选
+5. 读取`.../rules.mk`文件, 开始进入编译系统核心, 必选, 这又可以细分为如下过程
+
+## 详细工作过程
+
+* 产生*硬件平台配置文件*, 这个过程是为了产生顶层的`.config`文件, 也就是所谓的`$(CONFIG_TPL)`
+* 识别编译单元, 所谓编译单元在编译系统看来就是一个又一个包含`iot.mk`的目录, 如果不希望用`iot.mk`作为每个单元的编译片段文件, 在`project.mk`中设置`MAKE_SEGMENT`变量即可
+* 从`$(SUBDIRS)`变量从前往后逐个编译每个编译单元
+* 编译单元如果有依赖到其它编译单元, 则先去编译被依赖的单元; 若后者又有依赖的其它的单元, 则同样, 递归的先去编译起依赖; 以此类推
 
 # 高级命令示例
 
