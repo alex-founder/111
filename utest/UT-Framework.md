@@ -10,14 +10,13 @@
 
 ## 构建测试框架库
 
-按照如下步骤, 新建一个构建单元, 用它把测试框架库编译出来, 其实本质就是把`build-rules/misc/cut.c`编译成一个`libcut.a`或者`libcut.so`的库, 供测试主程序链接
+按照如下步骤, 新建一个构建单元, 用它把测试框架库编译出来, 其实本质就是把`build-rules/misc/cut.c`编译成一个`liblite-cut.a`或者`liblite-cut.so`的库, 供测试主程序链接
 
 ### 创建构建单元
 
 参考[构建单元说明](https://code.aliyun.com/edward.yangx/public-docs/wikis/build/build-system-units)页面, 可以按如下方式创建
 
     $ mkdir -p external/cut
-
     $ vi external/cut/iot.mk
     1  LIBA_TARGET     := liblite-cut.a
     2
@@ -25,12 +24,12 @@
     4  EXTRA_SRCS      := $(RULE_DIR)/misc/cut.[ch]
 
 * 片段文件`iot.mk`告诉构建系统如何编译框架库, 这个文件的文件名按照你工程中的`$(MAKE_SEGMENT)`变量来命名, 如果没有在`project.mk`中重定义, 默认是`iot.mk`
-* 假设按照上面的例子来创建, 则构建单元的名字就是`external/cut`, 测试主程序所在的构建单元将依赖它
+* 假设按照上面的例子来创建, 则构建单元的名字就是`external/cut`, 提供的库文件就是`liblite-cut.a`, 头文件就是`cut.h`, 测试主程序所在的构建单元将依赖它们
 
+### 尝试编译测试框架的库
 用如下的方式测试你已经可以成功的编译出测试框架库
 
     $ make reconfig
-
     $ make external/cut
     BUILDING WITH EXISTING CONFIGURATION:
 
@@ -47,4 +46,37 @@
 
 ## 构建测试主程序
 
-## 添加测试集和测试例
+所谓测试主程序其实就是一个简单的可执行程序, 它逐个的执行所有的测试例, 并且统计和展示这些测试例的执行结果
+
+### 创建构建单元
+
+参考[构建单元说明](https://code.aliyun.com/edward.yangx/public-docs/wikis/build/build-system-units)页面, 可以按如下方式创建, **注意不要使用`test`作为名字**
+
+    $ mkdir -p utest
+    $ vi utest/iot.mk
+    1 TARGET    := utest-prog
+    2 DEPENDS   += external/cut
+    3
+    4 LDFLAGS   += -llite-cut
+
+* 片段文件`iot.mk`告诉构建系统如何编译测试主程序, 这个文件的文件名按照你工程中的`$(MAKE_SEGMENT)`变量来命名, 如果没有在`project.mk`中重定义, 默认是`iot.mk`
+* 假设按照上面的例子来创建, 则构建单元的名字就是`utest`, 产生的可执行程序就是`utest-prog`, 它依赖`external/cut`在其之前编译, 会链接`liblite-cut.a`或者`liblite-cut.so`
+
+### 添加测试集到主程序
+
+接下来需要编写C语言的源文件, 产生测试主程序, 这通过在`main()`函数中直接调用`cut_main()`函数完成
+
+    $ vi utest/utest-main.c
+    1 #include "cut.h"
+    2
+    3 int main(int argc, char *argv[])
+    4 {
+    5     ADD_SUITE(demo_suite);
+    6
+    7     cut_main(argc, argv);
+    8     return 0;
+    9 }
+
+* 源文件`utest-main.c`是用来提供`main()`函数的C文件, 文件名任意, 在这个例子中, 它编译产生测试主程序`utest-prog`
+* 在这个例子中, 主测试程序执行的测试集只有`demo_suite`一个, 所谓测试集(suite)是一系列的测试例, 所谓测试例(case)是一系列调用接口和比对结果的C函数
+* 访问[单元测试用例](https://code.aliyun.com/edward.yangx/public-docs/wikis/utest/ut-case)页面, 详细了解如何添加测试例, 组成测试集
