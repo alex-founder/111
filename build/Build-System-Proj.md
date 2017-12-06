@@ -41,7 +41,7 @@
     $(call End_Coverage_Progs)
     # 告诉构建系统, 到这里为止单元测试程序列举完毕
 
-> 以上面的`LITE-utils`为例, 其中的`utils-tests`就是它的单元测试程序, 这是在编译单元`testsuites`中产生的一个`Linux`下可执行程序
+> 以上面的`LITE-utils`为例, 其中的`utils-tests`就是它的单元测试程序, 这是在构建单元`testsuites`中产生的一个`Linux`下可执行程序
 
     $ cat testsuites/iot.mk -n
          1  TARGET      := utils-tests
@@ -50,4 +50,4 @@
          4
          5  LDFLAGS     += -llite-utils -llite-log -llite-cut
 
-为什么如上的一个简单`iot.mk`片段文件, 就能指导构建系统生成可执行程序`utils-tests`, 可以访问[**编译单元说明**](https://code.aliyun.com/edward.yangx/public-docs/wikis/build/build-system-units)
+为什么如上的一个简单`iot.mk`片段文件, 就能指导构建系统生成可执行程序`utils-tests`, 可以访问[**构建单元说明**](https://code.aliyun.com/edward.yangx/public-docs/wikis/build/build-system-units)
