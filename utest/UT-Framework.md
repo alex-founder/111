@@ -58,9 +58,11 @@
     2 DEPENDS   += external/cut
     3
     4 LDFLAGS   += -llite-cut
+    5 LDFLAGS   += -ldemo-lib
 
 * 片段文件`iot.mk`告诉构建系统如何编译测试主程序, 这个文件的文件名按照你工程中的`$(MAKE_SEGMENT)`变量来命名, 如果没有在`project.mk`中重定义, 默认是`iot.mk`
 * 假设按照上面的例子来创建, 则构建单元的名字就是`utest`, 产生的可执行程序就是`utest-prog`, 它依赖`external/cut`在其之前编译, 会链接`liblite-cut.a`或者`liblite-cut.so`
+* 需要明确你的测试主程序所测试的C函数是由什么库提供的, 在这个例子里, 被测试的C函数来自一个名为`libdemo-lib.a`的静态库或者名为`libdemo-lib.so`的动态库
 
 ### 添加测试集到主程序
 
@@ -80,3 +82,16 @@
 * 源文件`utest-main.c`是用来提供`main()`函数的C文件, 文件名任意, 在这个例子中, 它编译产生测试主程序`utest-prog`
 * 在这个例子中, 主测试程序执行的测试集只有`demo_suite`一个, 所谓测试集(suite)是一系列的测试例, 所谓测试例(case)是一系列调用接口和比对结果的C函数
 * 访问[单元测试用例](https://code.aliyun.com/edward.yangx/public-docs/wikis/utest/ut-case)页面, 详细了解如何添加测试例, 组成测试集
+
+## 结合测试主程序和构建系统
+
+参考[构建工程说明](https://code.aliyun.com/edward.yangx/public-docs/wikis/build/build-system-proj)页面, 了解如何把你的测试主程序和构建系统联系起来
+
+---
+在上面的例子中, 可以编辑工程的顶层`makefile`, 添加如下语句
+
+    $(call Add_Coverage_Progs, utest-prog --list)
+    $(call Add_Coverage_Progs, utest-prog)
+    $(call End_Coverage_Progs)
+
+**之后用`make test`命令, 就可以执行测试主程序`utest-prog`, 执行测试集中的测试例, 统计和展示结果, 并统计测试例对代码的覆盖率**
