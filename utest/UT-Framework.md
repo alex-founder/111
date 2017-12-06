@@ -4,7 +4,7 @@
 
 参考[构建系统概述](https://code.aliyun.com/edward.yangx/public-docs/wikis/build/build-system-introduction)页面, 了解如何获取最新的构建系统到你的项目中, 这是装备测试框架的前提
 
-也可以直接访问样板组件[LITE-utils](http://gitlab.alibaba-inc.com/iot-middleware/LITE-utils)的仓库, 其中测试框架和测试例已经就绪, 可以直接体验和观察单元测试框架的工作方式和效果
+**也可以访问样板组件[LITE-utils](http://gitlab.alibaba-inc.com/iot-middleware/LITE-utils)的仓库, 其中测试框架和测试例都已经就绪, 可以直接体验和观察单元测试框架的工作方式和效果**
 
     $ git clone git@gitlab.alibaba-inc.com:iot-middleware/LITE-utils.git
 
