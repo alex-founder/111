@@ -90,8 +90,6 @@
 ---
 在上面的例子中, 可以编辑工程的顶层`makefile`, 添加如下语句
 
-    $(call Add_Coverage_Progs, utest-prog --list)
-    $(call Add_Coverage_Progs, utest-prog)
-    $(call End_Coverage_Progs)
+    UTEST_PROG := utest-prog
 
 **之后用`make test`命令, 就可以执行测试主程序`utest-prog`, 执行测试集中的测试例, 统计和展示结果, 并统计测试例对代码的覆盖率**

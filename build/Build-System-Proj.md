@@ -23,23 +23,9 @@
 
 ## 定制单元测试
 
-如果你的工程含有配合构建系统的单元测试用例, 则可以在顶层`makefile`中的结尾部分添写类似如下语句, 告诉构建系统如何在`make test`命令中执行它们, 并统计源码覆盖率
+如果你的工程含有配合构建系统的单元测试用例, 则可以在顶层`makefile`中添写类似如下语句, 告诉构建系统在`make test`命令中执行它们做单元测试, 并统计源码覆盖率
 
-    $(call Add_Coverage_Progs, utils-tests --list)
-    $(call Add_Coverage_Progs, utils-tests)
-    $(call End_Coverage_Progs)
-
-语法是:
-
-    $(call Add_Coverage_Progs, <program> <argument-list>)
-    ...
-    # <program> 是单元测试程序的名字
-    # <argument-list> 是单元测试程序对应的参数列表
-    ...
-    # 重复1-N次, 告诉构建系统依次执行所有的单元测试程序
-    ...
-    $(call End_Coverage_Progs)
-    # 告诉构建系统, 到这里为止单元测试程序列举完毕
+    UTEST_PROG := utils-tests
 
 > 以上面的`LITE-utils`为例, 其中的`utils-tests`就是它的单元测试程序, 这是在构建单元`testsuites`中产生的一个`Linux`下可执行程序
 

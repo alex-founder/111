@@ -8,5 +8,6 @@
 
 # 单元测试
 
-## [单元测试框架](https://code.aliyun.com/edward.yangx/public-docs/wikis/utest/ut-framework): 如何使用测试框架
+## [单元测试使用](https://code.aliyun.com/edward.yangx/public-docs/wikis/utest/ut-usage): 如何使用测试框架
+## [单元测试装备](https://code.aliyun.com/edward.yangx/public-docs/wikis/utest/ut-framework): 如何装备测试框架
 ## [单元测试用例](https://code.aliyun.com/edward.yangx/public-docs/wikis/utest/ut-case): 如何编写测试用例
