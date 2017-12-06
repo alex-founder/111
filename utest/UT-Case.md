@@ -40,20 +40,20 @@
 * 在这个测试例中, `demo_suite`是它所归属的测试集的名字, `demo_case`是它自身的名字
 * 判断被测试的函数是否工作的符合预期很简单, 获取返回值, 然后用`ASSERT_EQ`, 判断返回值是否等于25, 所有这样的断言宏可以看`cut.h`的如下部分
 
-    #define ASSERT_FAIL()                       RAISE_EXCEPTION_WITH_MSG("[should not be here]")
-    #define ASSERT_FALSE(cond)                  ASSERT_TRUE(!(cond))
-    #define ASSERT_NULL(ptr)                    ASSERT_INT(ptr, ==, NULL)
-    #define ASSERT_NOT_NULL(ptr)                ASSERT_INT(ptr, !=, NULL)
-    #define ASSERT_EQ(actual, expected)         ASSERT_INT(actual, ==, expected)
-    #define ASSERT_NE(actual, expected)         ASSERT_INT(actual, !=, expected)
-    #define ASSERT_GT(actual, expected)         ASSERT_INT(actual,  >, expected)
-    #define ASSERT_GE(actual, expected)         ASSERT_INT(actual, >=, expected)
-    #define ASSERT_LT(actual, expected)         ASSERT_INT(actual,  <, expected)
-    #define ASSERT_LE(actual, expected)         ASSERT_INT(actual, <=, expected)
-    #define ASSERT_STR_EQ(actual, expected)     ASSERT_STR(actual, ==, expected)
-    #define ASSERT_STR_NE(actual, expected)     ASSERT_STR(actual, !=, expected)
-    #define ASSERT_STR_GT(actual, expected)     ASSERT_STR(actual,  >, expected)
-    #define ASSERT_STR_LT(actual, expected)     ASSERT_STR(actual,  <, expected)
+        #define ASSERT_FAIL()                       RAISE_EXCEPTION_WITH_MSG("[should not be here]")
+        #define ASSERT_FALSE(cond)                  ASSERT_TRUE(!(cond))
+        #define ASSERT_NULL(ptr)                    ASSERT_INT(ptr, ==, NULL)
+        #define ASSERT_NOT_NULL(ptr)                ASSERT_INT(ptr, !=, NULL)
+        #define ASSERT_EQ(actual, expected)         ASSERT_INT(actual, ==, expected)
+        #define ASSERT_NE(actual, expected)         ASSERT_INT(actual, !=, expected)
+        #define ASSERT_GT(actual, expected)         ASSERT_INT(actual,  >, expected)
+        #define ASSERT_GE(actual, expected)         ASSERT_INT(actual, >=, expected)
+        #define ASSERT_LT(actual, expected)         ASSERT_INT(actual,  <, expected)
+        #define ASSERT_LE(actual, expected)         ASSERT_INT(actual, <=, expected)
+        #define ASSERT_STR_EQ(actual, expected)     ASSERT_STR(actual, ==, expected)
+        #define ASSERT_STR_NE(actual, expected)     ASSERT_STR(actual, !=, expected)
+        #define ASSERT_STR_GT(actual, expected)     ASSERT_STR(actual,  >, expected)
+        #define ASSERT_STR_LT(actual, expected)     ASSERT_STR(actual,  <, expected)
 
 ## 添加测试集
 
