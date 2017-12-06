@@ -8,5 +8,5 @@
 
 # 单元测试
 
-## [单元测试概述](https://code.aliyun.com/edward.yangx/public-docs/wikis/utest/ut-intro): 简要介绍
-## [单元测试说明](https://code.aliyun.com/edward.yangx/public-docs/wikis/utest/ut-mannual): 如何编写测试用例
+## [单元测试框架](https://code.aliyun.com/edward.yangx/public-docs/wikis/utest/ut-framework): 如何使用测试框架
+## [单元测试用例](https://code.aliyun.com/edward.yangx/public-docs/wikis/utest/ut-case): 如何编写测试用例
