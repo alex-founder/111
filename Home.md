@@ -15,4 +15,4 @@
 
 # 组件化
 
-## [组件化例子](https://code.aliyun.com/edward.yangx/public-docs/mods/mod-example): 一些实际的组件化例子
+## [组件化例子](https://code.aliyun.com/edward.yangx/public-docs/wikis/mods/mod-example): 一些实际的组件化例子
