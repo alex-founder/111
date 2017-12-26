@@ -2,7 +2,12 @@
 
 ## 组件化MQTT模块
 
-### 创建仓库
+### 目录
++ 一. 创建仓库
++ 二. 在项目中使用组件仓库
++ 三. 维护被组件化的代码
+
+### 一. 创建仓库
 
 + 访问组件仓库: [http://gitlab.alibaba-inc.com/groups/iot-middleware](http://gitlab.alibaba-inc.com/groups/iot-middleware), 点击`+NEW PROJECT`按钮, 创建线上仓库
 
@@ -90,7 +95,7 @@
         edward @ /tmp$ ls Link-MQTT/
         mqtt_client.c  mqtt_client.h  MQTTPacket
 
-### 在项目仓库中使用组件仓库
+### 二. 在项目仓库中使用组件仓库
 
 > 在这个例子中, 我们假设有`IoT套件项目`存放在`~/srcs/iotx-sdk-c`目录, 其中的`src/mqtt`目录, 需要替换成上面刚刚创建的`Link-MQTT`
 
@@ -292,3 +297,43 @@
         Date:   Tue Dec 26 11:25:17 2017 +0800
 
             [src/mqtt] modulize with Link-MQTT
+
+### 三. 维护被组件化的代码
+
++ 确定被组件化的代码存放的本地目录, 比如`~/srcs/iotx-sdk-c.pkgs/Link-MQTT`
+
+> 以上面的例子, 假设套件仓库在`~/srcs/iotx-sdk-c`, 则所有被组件化的模块都会解压到`~/srcs/iotx-sdk-c.pkgs`
+
+    edward @ ~/srcs/iotx-sdk-c.pkgs$ ls
+    Link-MQTT  LITE-log  LITE-utils  mbedtls-in-iotkit
+
++ 使用`Source Insight`等编辑器把解压目录的源码加入到工程
++ 编辑... 编译... 验证
++ 确定要提交的时候, 首先提交到组件本身仓库, 使用的位置是组件解压目录, 使用的命令是`git push upstream`
+
+        edward @ ~/srcs/iotx-sdk-c.pkgs$ cd Link-MQTT/
+        edward @ ~/srcs/iotx-sdk-c.pkgs/Link-MQTT$ git remote -v
+        origin  /home/edward/srcs/iotx-sdk-c/src/packages/Link-MQTT.git (fetch)
+        origin  /home/edward/srcs/iotx-sdk-c/src/packages/Link-MQTT.git (push)
+        upstream        git@gitlab.alibaba-inc.com:iot-middleware/Link-MQTT.git (fetch)
+        upstream        git@gitlab.alibaba-inc.com:iot-middleware/Link-MQTT.git (push)
+        edward @ ~/srcs/iotx-sdk-c.pkgs/Link-MQTT$ git push upstream
+      
++ 然后提交到项目目录, 使用的命令是`make repo-update`, 和上文一样
+
+        edward @ ~/srcs/iotx-sdk-c$ make repo-update
+        [ Link-MQTT.git ] <= : git@gitlab.alibaba-inc.com:iot-middleware/Link-MQTT.git :: master
+        + cd /home/edward/srcs/iotx-sdk-c/src/packages
+        + rm -rf Link-MQTT.git
+        + git clone -q --bare -b master --single-branch git@gitlab.alibaba-inc.com:iot-middleware/Link-MQTT.git Link-MQTT.git
+        + rm -rf Link-MQTT.git/hooks/
+        + mkdir -p Link-MQTT.git/hooks/
+        + touch Link-MQTT.git/hooks/.gitkeep
+        + touch Link-MQTT.git/refs/heads/.gitkeep Link-MQTT.git/refs/tags/.gitkeep
+        + rm -rf /home/edward/srcs/iotx-sdk-c.pkgs/Link-MQTT
+        + cd /home/edward/srcs/iotx-sdk-c
+        + set +x
+        edward @ ~/srcs/iotx-sdk-c$ git add src/packages/Link-MQTT.git/
+        edward @ ~/srcs/iotx-sdk-c$ git commit
+        edward @ ~/srcs/iotx-sdk-c$ git pull --rebase
+        edward @ ~/srcs/iotx-sdk-c$ git push
