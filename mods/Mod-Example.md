@@ -110,12 +110,13 @@
 + 改写片段文件, 填写线上地址, 这里用`PKG_SOURCE`变量指定组件在本地存放的裸仓库目录名, 用`PKG_UPSTREAM`变量指定组件的线上地址
 
         edward @ ~/srcs/iotx-sdk-c$ cat -n src/mqtt/iot.mk 
-             1  LIBA_TARGET     := libiot_mqtt.a
-             2  HDR_REFS        := src
-             3  DEPENDS         := src/log src/utils
-             4
-             5  PKG_SOURCE      := Link-MQTT.git
-             6  PKG_UPSTREAM    := git@gitlab.alibaba-inc.com:iot-middleware/Link-MQTT.git
+         1  LIBA_TARGET     := libiot_mqtt.a
+         2  LIB_SRCS        := $(wildcard Link-MQTT/*.c Link-MQTT/*/*.c)
+         3  HDR_REFS        := src
+         4  DEPENDS         := src/log src/utils
+         5
+         6  PKG_SOURCE      := Link-MQTT.git
+         7  PKG_UPSTREAM    := git@gitlab.alibaba-inc.com:iot-middleware/Link-MQTT.git
 
 + 到项目顶层目录, 运行`make reconfig`, 再运行`make repo-list`, 验证一下被填写的组件地址已经被编译系统成功识别
 
