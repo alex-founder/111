@@ -130,3 +130,5 @@
         SRCS_prog1 = prog1.c
         SRCS_prog2 = prog2.c library_A.c
         SRCS_prog3 = prog3.c library_A.c library_B.c
+
+* 目前除了`SRCS`变量, 没有其它变量支持这种带后缀的语法, 对多个可执行程序的`DEPENDS`, `LDFLAGS`等, 仍是整体指定
