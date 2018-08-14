@@ -48,10 +48,10 @@
 
 ## <a name="如何开发">如何开发</a>
 
-* 访问[**构建系统配置**](https://code.aliyun.com/edward.yangx/public-docs/wikis/build/build-system-config), 了解如何配置来影响构建系统的行为
-* 访问[**构建工程说明**](https://code.aliyun.com/edward.yangx/public-docs/wikis/build/build-system-proj), 了解如何定制工程全局的编译
-* 访问[**构建单元说明**](https://code.aliyun.com/edward.yangx/public-docs/wikis/build/build-system-units), 了解如何增删改查你自己的构建单元
-* 访问[**构建系统调试**](https://code.aliyun.com/edward.yangx/public-docs/wikis/build/build-system-debug), 了解在定制构建单元时, 如何自己调试
+* 访问[构建系统配置](#构建系统的配置), 了解如何配置来影响构建系统的行为
+* 访问[构建工程说明](#定制工程全局的编译行为), 了解如何定制工程全局的编译
+* 访问[构建单元说明](#构建单元说明), 了解如何增删改查你自己的构建单元
+* 访问[构建系统调试](#构建系统的调试), 了解在定制构建单元时, 如何自己调试
 
 ## <a name="高级命令">高级命令</a>
 
