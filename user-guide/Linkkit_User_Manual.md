@@ -78,6 +78,7 @@
             + [高级版网关使用TSL动态拉取](#高级版网关使用TSL动态拉取)
 
 
+*[回到目录](#目录)*
 # <a name="快速开始">快速开始</a>
 
 本节描述如何申请自己的设备，并结合本SDK快速体验该设备通过`MQTT`+`TLS/SSL`协议连接到阿里云，上报和接收业务报文。关于SDK的更多使用方式，请访问[官方WiKi](https://github.com/aliyun/iotkit-embedded/wiki)
@@ -89,8 +90,10 @@
 > 利用MQTT协议是一种基于二进制消息的发布/订阅编程模式的消息协议，下面的应用程序先在阿里云IoT平台订阅(`Subscribe`)一个`Topic`成功, 然后自己向该`Topic`做发布(`Publish`)动作
 > 阿里云IoT平台收到之后，就会原样推送回这个应用程序，因为该程序之前已经通过订阅(`Subscribe`)动作成为该`Topic`的一个接收者，发布到这个`Topic`上的任何消息，都会被推送到已订阅该`Topic`的所有终端上
 
+*[回到目录](#目录)*
 ## <a name="一. 开发环境准备">一. 开发环境准备</a>
 
+*[回到目录](#目录)*
 ### <a name="1. 安装Ubuntu16.04">1. 安装Ubuntu16.04</a>
 
 本SDK的编译环境是`64位`的`Ubuntu16.04`，在其它Linux上尚未测试过，所以推荐安装与阿里开发者一致的发行版
@@ -99,6 +102,7 @@
 
 然后安装64位的desktop版本`Ubuntu 16.04.x LTS`，下载地址: [https://www.ubuntu.com/download/desktop](https://www.ubuntu.com/download/desktop)
 
+*[回到目录](#目录)*
 ### <a name="2. 安装必备软件">2. 安装必备软件</a>
 
 本SDK的开发编译环境使用如下软件: `make-4.1`, `git-2.7.4`, `gcc-5.4.0`, `gcov-5.4.0`, `lcov-1.12`, `bash-4.3.48`, `tar-1.28`, `mingw-5.3.1`
@@ -107,17 +111,21 @@
 
     apt-get install -y build-essential make git gcc
 
+*[回到目录](#目录)*
 ### <a name="3. 下载物联网套件SDK">3. 下载物联网套件SDK</a>
 
 当前物联网套件最新SDK版本为Linkkit 2.2.0，可从如下地址获取：
 -   **[Linkkit 2.2.0下载地址](https://linkkit-sdk-download.oss-cn-shanghai.aliyuncs.com/linkkit2.2.tar.gz)**
 
+*[回到目录](#目录)*
 ## <a name="二. 在控制台创建设备">二. 在控制台创建设备</a>
 
+*[回到目录](#目录)*
 ### <a name="1. 注册/登录阿里云账号">1. 注册/登录阿里云账号</a>
 
 访问阿里云[登录页面](https://account.aliyun.com/login/login.htm), 点击[免费注册](https://account.aliyun.com/register/register.htm), 免费获得一个阿里云账号. 若您已有账号, 可直接登录
 
+*[回到目录](#目录)*
 ### <a name="2. 访问物联网套件控制台">2. 访问物联网套件控制台</a>
 
 登入之后, 鼠标悬停在**产品**上, 弹出层叠菜单，并单击**阿里云Link Platform**
@@ -128,6 +136,7 @@
 
 ![image](https://linkkit-export.oss-cn-shanghai.aliyuncs.com/%E4%BA%A7%E5%93%81-%E9%98%BF%E9%87%8C%E4%BA%91Link%20Platform-%E7%AB%8B%E5%8D%B3%E5%BC%80%E9%80%9A.png)
 
+*[回到目录](#目录)*
 ### <a name="3. 创建产品和设备（基础版）">3. 创建产品和设备（基础版）</a>
 
 进入IoT控制台后，点击页面左侧导航栏的**产品管理**，再点击右侧的**创建产品**，如下图所示：
@@ -178,6 +187,7 @@
 
 ![image](https://linkkit-export.oss-cn-shanghai.aliyuncs.com/LP-%E4%BA%A7%E5%93%81-%E6%B6%88%E6%81%AF%E9%80%9A%E4%BF%A1-%E8%87%AA%E5%AE%9A%E4%B9%89topic-data.png)
 
+*[回到目录](#目录)*
 ### <a name="4. 创建产品和设备（高级版）">4. 创建产品和设备（高级版）</a>
 
 进入IoT控制台后，点击页面左侧导航栏的**产品管理**，再点击右侧的**创建产品**，如下图所示：
@@ -271,17 +281,21 @@
 ![image](https://linkkit-export.oss-cn-shanghai.aliyuncs.com/LP-ADV-%E4%BA%A7%E5%93%81%E7%AE%A1%E7%90%86-%E4%BA%A7%E5%93%81%E8%AF%A6%E6%83%85-%E5%8A%9F%E8%83%BD%E5%AE%9A%E4%B9%89-%E5%AE%8C%E6%88%90.png)
 
 
+*[回到目录](#目录)*
 ## <a name="三. 编译运行样例程序">三. 编译运行样例程序</a>
 
+*[回到目录](#目录)*
 ### <a name="1. 样例程序（基础版）">1. 样例程序（基础版）</a>
 
 
+*[回到目录](#目录)*
 #### <a name="1.1 填入设备信息">1.1 填入设备信息</a>
 
 编辑文件`iotx-sdk-c/examples/mqtt/mqtt-example.c`, 编辑如下代码段, 填入之前**创建产品和设备**步骤中得到的**设备三元组**:
 
 ![image](https://linkkit-export.oss-cn-shanghai.aliyuncs.com/LP-%E4%BB%A3%E7%A0%81%E7%A4%BA%E4%BE%8B-mqtt-example-%E4%B8%89%E5%85%83%E7%BB%84%E4%BF%AE%E6%94%B9.png)
 
+*[回到目录](#目录)*
 #### <a name="1.2 编译SDK产生样例程序">1.2 编译SDK产生样例程序</a>
 
 运行如下命令:
@@ -307,6 +321,7 @@
     ...
     ...
 
+*[回到目录](#目录)*
 #### <a name="1.3 执行样例程序">1.3 执行样例程序</a>
 
     $ ./output/release/bin/mqtt-example 
@@ -372,12 +387,14 @@
     ...
     main|361 :: out of sample! 
 
+*[回到目录](#目录)*
 #### <a name="1.4 观察消息上报">1.4 观察消息上报</a>
 
 如下日志信息显示样例程序正在通过`MQTT`的`Publish`类型消息, 上报业务数据到`/${prodcutKey}/${deviceName}/data`
 
     mqtt_client|309 :: packet-id=7, publish topic msg={"attr_name":"temperature", "attr_value":"1"}
 
+*[回到目录](#目录)*
 #### <a name="1.5 观察消息下推">1.5 观察消息下推</a>
 
 如下日志信息显示该消息因为是到达已被订阅的`Topic`, 所以又被服务器原样推送到样例程序, 并进入相应的回调函数
@@ -388,16 +405,19 @@
     _demo_message_arrive|175 :: Payload: '{"attr_name":"temperature", "attr_value":"1"}' (Length: 45)
     _demo_message_arrive|176 :: ----
 
+*[回到目录](#目录)*
 #### <a name="1.6 观察控制台日志">1.6 观察控制台日志</a>
 
 可以登录物联网套件控制台, 到**产品管理**, 找到刚才创建的产品，点击**查看**，选择**日志服务**选项卡，可以看到刚才上报的消息（Message ID为7）
 
 ![image](https://linkkit-export.oss-cn-shanghai.aliyuncs.com/LP-%E4%BA%A7%E5%93%81%E7%AE%A1%E7%90%86-%E4%BA%A7%E5%93%81%E8%AF%A6%E6%83%85-%E6%97%A5%E5%BF%97%E6%9C%8D%E5%8A%A1.png)
 
+*[回到目录](#目录)*
 ### <a name="2. 样例程序（高级版）">2. 样例程序（高级版）</a>
 
 高级版以单品API为例演示设备服务、属性、事件的数据流转
 
+*[回到目录](#目录)*
 #### <a name="2.1 填入设备信息">2.1 填入设备信息</a>
 高级版单品的exmaple位于`iotx-sdk-c/examples/linkkit/linkkit_example_solo.c`，该example用到的TSL位于同目录下的`example_tsl_solo.data`。  
 
@@ -434,6 +454,7 @@
 
 之前我们在产品的**功能定义**中定义了一个服务、一个属性和一个事件，与`linkkit_example_solo.c`中的相同，所以不需要做出修改。
 
+*[回到目录](#目录)*
 #### <a name="2.2 编译SDK产生样例程序">2.2 编译SDK产生样例程序</a>
 
 运行如下命令:
@@ -443,6 +464,7 @@
 
 编译成功完成后, 生成的样例程序为当前目录的`output/release/bin`目录下的`linkkit-example-solo`
 
+*[回到目录](#目录)*
 #### <a name="2.3 执行样例程序">2.3 执行样例程序</a>
 
     ./output/release/bin/linkkit-example-solo 
@@ -600,6 +622,7 @@
 
 > 关于SDK的更多使用方式, 请访问[阿里云物联网平台帮助文档](https://help.aliyun.com/product/30520.html)
 
+*[回到目录](#目录)*
 # <a name="设备端SDK的编译">设备端SDK的编译</a>
 
 设备端SDK目前支持以下的编译方式:
@@ -610,6 +633,7 @@
 - 在`Windows`上以`QT Creator`编译, 产生`Windows架构`的SDK
 - 在`Windows`上以`Visual Studio 2017`编译, 产生`Windows架构`的SDK
 
+*[回到目录](#目录)*
 ## <a name="编译配置项说明">编译配置项说明</a>
 
 解压之后, 打开编译配置文件`make.settings`, 根据需要编辑配置项，使用不同的编译配置，编译输出的SDK内容以及examples都有所不同。
@@ -627,6 +651,7 @@
     FEATURE_ALCS_ENABLED         = y          # 是否打开本地通信功能的总开关
     FEATURE_OTA_ENABLED          = y          # 切换网关和单品的总开关
 
+*[回到目录](#目录)*
 ## <a name="在Ubuntu上编译主机版本">在Ubuntu上编译主机版本</a>
 
 具体步骤是:
@@ -636,6 +661,7 @@
 
 即可得到`libiot_sdk.a`
 
+*[回到目录](#目录)*
 ### <a name="正常的编译过程演示">正常的编译过程演示</a>
 
     $ make distclean
@@ -842,6 +868,7 @@
     [LD] http-example                       <=  ...
     [LD] linkkit-example-sched              <=  ...
 
+*[回到目录](#目录)*
 ### <a name="得到的编译产物说明">得到的编译产物说明</a>
 
 SDK编译的产物在编译成功之后都存放在 `output` 目录下:
@@ -910,6 +937,7 @@ SDK编译的产物在编译成功之后都存放在 `output` 目录下:
 | output/lib/libiot_tls.a                               | TLS主库, 集中提供了所有`mbedtls_xxx_yyy()`接口的实现, 它的上层是`libiot_hal.a`
 | output/lib/*.a                                        | 其它分库, 它们是从SDK源码目录的`prebuilt/`目录移动过来的, 主要提供一些闭源发布的功能, 比如`ID2`等
 
+*[回到目录](#目录)*
 ## <a name="交叉编译到嵌入式硬件平台">交叉编译到嵌入式硬件平台</a>
 
 对于嵌入式硬件平台的情况, 对编译出目标平台的`libiot_sdk.a`, 需要经历如下几个步骤:
@@ -922,6 +950,7 @@ SDK编译的产物在编译成功之后都存放在 `output` 目录下:
 ---
 下面以某款目前未适配的`arm-linux`目标平台为例, 演示如何编译出该平台上可用的`libiot_sdk.a`
 
+*[回到目录](#目录)*
 ### <a name="0. 安装交叉编译工具链">0. 安装交叉编译工具链</a>
 
 > 仍以Ubuntu16.04开发环境为例
@@ -934,12 +963,14 @@ SDK编译的产物在编译成功之后都存放在 `output` 目录下:
     This is free software; see the source for copying conditions.  There is NO
     warranty; not even for MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
 
+*[回到目录](#目录)*
 ### <a name="1. 添加配置文件">1. 添加配置文件</a>
 
     $ touch src/board/config.arm-linux.demo
     $ ls src/board/
     config.arm-linux.demo  config.macos.make  config.rhino.make  config.ubuntu.x86  config.win7.mingw32
 
+*[回到目录](#目录)*
 ### <a name="2. 编辑配置文件, 设置编译选项和工具链, 以及跳过编译的目录">2. 编辑配置文件, 设置编译选项和工具链, 以及跳过编译的目录</a>
 
     $ vim src/board/config.arm-linux.demo
@@ -960,6 +991,7 @@ SDK编译的产物在编译成功之后都存放在 `output` 目录下:
 
 注意, 倒数4行表示对`src/ref-impl/hal`, `examples`, `tests`, `src/tools/linkkit_tsl_convert`这些目录跳过编译, 在编译未被适配平台的库时, 这在最初是必要的
 
+*[回到目录](#目录)*
 ### <a name="3. 选择配置文件">3. 选择配置文件</a>
 
     $ make reconfig
@@ -1023,6 +1055,7 @@ SDK编译的产物在编译成功之后都存放在 `output` 目录下:
     . src/infra/utils                                          
     . examples     
 
+*[回到目录](#目录)*
 ### <a name="4. 交叉编译产生库文件`libiot_sdk.a`">4. 交叉编译产生库文件`libiot_sdk.a`</a>
 
     $ make
@@ -1040,6 +1073,7 @@ SDK编译的产物在编译成功之后都存放在 `output` 目录下:
     [AR] libiot_sdk.a                       <=  ...
     [AR] libiot_tls.a                       <=  ...
 
+*[回到目录](#目录)*
 ### <a name="5. 获取交叉编译的产物, 包括静态库和头文件">5. 获取交叉编译的产物, 包括静态库和头文件</a>
 
     $ ls -1 output/release/lib/
@@ -1058,6 +1092,7 @@ SDK编译的产物在编译成功之后都存放在 `output` 目录下:
 
 这里, `iot_import.h`和`iot_export.h`就是使用SDK需要包含的头文件, 它们按功能点又包含不同的子文件, 分别列在`imports/`目录下和`exports/`目录下
 
+*[回到目录](#目录)*
 ## <a name="开发未适配平台的HAL层">开发未适配平台的HAL层</a>
 
 对于平台抽象层的库`libiot_hal.a`, 虽然说不指定任何编译和产生的方式, 但是如果你愿意的话, 当然仍然可以借助物联网套件设备端SDK的编译系统来开发和产生它
@@ -1065,6 +1100,7 @@ SDK编译的产物在编译成功之后都存放在 `output` 目录下:
 ---
 仍然以上一节中, 某款目前未适配的`arm-linux`目标平台为例, 假设这款平台和`Ubuntu`差别很小, 完全可以用`Ubuntu`上开发测试的HAL层代码作为开发的基础, 则可以这样做:
 
+*[回到目录](#目录)*
 ### <a name="1. 在`src/ref-impl/hal/`目录下复制一份HAL层实现代码">1. 在`src/ref-impl/hal/`目录下复制一份HAL层实现代码</a>
 
     $ cd src/ref-impl/hal/os/
@@ -1087,6 +1123,7 @@ SDK编译的产物在编译成功之后都存放在 `output` 目录下:
     +-- kv.c
     +-- kv.h
 
+*[回到目录](#目录)*
 ### <a name="2. 打开之前被关闭的`src/ref-impl/hal`编译开关">2. 打开之前被关闭的`src/ref-impl/hal`编译开关</a>
 
     $ vim src/board/config.arm-linux.demo
@@ -1107,6 +1144,7 @@ SDK编译的产物在编译成功之后都存放在 `output` 目录下:
 
 可以看到在`CONFIG_src/ref-impl/hal :=`这一行前添加了一个`#`符号, 代表这一行被注释掉了, 效果等同于被删掉, `src/ref-impl/hal`将会进入编译过程
 
+*[回到目录](#目录)*
 ### <a name="3. 尝试编译被复制的HAL层代码">3. 尝试编译被复制的HAL层代码</a>
 
     $ make reconfig
@@ -1135,6 +1173,7 @@ SDK编译的产物在编译成功之后都存放在 `output` 目录下:
 
 可以看到我们进展的确实十分顺利, 被复制的代码`src/ref-impl/hal/os/arm-linux/*.c`确实直接编译成功了, 产生了`arm-linux`格式的`libiot_hal.a`
 
+*[回到目录](#目录)*
 ### <a name="4. 编辑配置文件, 尝试产生样例程序">4. 编辑配置文件, 尝试产生样例程序</a>
 
 这样有了`libiot_hal.a`, `libiot_tls.a`, 以及`libiot_sdk.a`, 其实以及可以尝试产生样例的可执行程序, 并在目标嵌入式硬件开发板上运行一下试试了
@@ -1169,6 +1208,7 @@ SDK编译的产物在编译成功之后都存放在 `output` 目录下:
 
 部分, 这是因为产生这些样例程序除了链接`libiot_hal.a`和`libiot_hal.a`之外, 还需要连接`libpthread`库和`librt`库
 
+*[回到目录](#目录)*
 ### <a name="5. 重新载入配置文件, 编译可执行程序">5. 重新载入配置文件, 编译可执行程序</a>
 
     $ make reconfig
@@ -1232,6 +1272,7 @@ SDK编译的产物在编译成功之后都存放在 `output` 目录下:
 
 可以用`file`命令验证, 这些可执行程序确实是交叉编译到`arm-linux`架构上的
 
+*[回到目录](#目录)*
 ### <a name="6. 尝试运行样例程序">6. 尝试运行样例程序</a>
 
 接下来, 您就可以把样例程序例如`mqtt-example`, 用`SCP`, `TFTP`或者其它方式, 拷贝下载到您的目标开发板上运行调试了
@@ -1241,8 +1282,10 @@ SDK编译的产物在编译成功之后都存放在 `output` 目录下:
 
 如此反复直到确保`libiot_hal.a`的开发没问题为止
 
+*[回到目录](#目录)*
 # <a name="硬件平台抽象层(HAL层)">硬件平台抽象层(HAL层)</a>
 
+*[回到目录](#目录)*
 ## <a name="设备端C-SDK分层">设备端C-SDK分层</a>
 
         +---------------------------+
@@ -1299,6 +1342,7 @@ SDK编译的产物在编译成功之后都存放在 `output` 目录下:
 + 这些`include/imports`目录下的子文件, 都被`include/iot_import.h`包含
 + 这个部分的函数声明, 对应在`src/ref-impl/hal/os/ubuntu/`有提供一份`Ubuntu`桌面系统上的参考实现, 会被编译成`output/release/lib/libiot_hal.a`
 
+*[回到目录](#目录)*
 ## <a name="HAL层接口详述">HAL层接口详述</a>
 
 以下可以列出所有跨平台移植时需要实现的HAL层接口
@@ -1351,6 +1395,7 @@ SDK编译的产物在编译成功之后都存放在 `output` 目录下:
 
 在这些HAL接口中
 
+*[回到目录](#目录)*
 ## <a name="必选实现">必选实现</a>
 
 | 函数名                   | 说明                                                                    |
@@ -1363,6 +1408,7 @@ SDK编译的产物在编译成功之后都存放在 `output` 目录下:
 | HAL_Vsnprintf            | 字符串打印函数, 将`va_list`类型的变量, 打印到指定目标字符串             |
 | HAL_UptimeMs             | 时钟函数, 获取本设备从加电以来到目前时间点已经过去的毫秒数              |
 
+*[回到目录](#目录)*
 ## <a name="多线程相关">多线程相关</a>
 
 | 函数名                   | 说明                                                                           |
@@ -1379,6 +1425,7 @@ SDK编译的产物在编译成功之后都存放在 `output` 目录下:
 | HAL_SemaphorePost        | 在指定的计数信号量上做自减操作并等待，对于仅支持单线程应用, 可实现为空函数     |
 | HAL_SemaphoreWait        | 在指定的计数信号量上做自增操作, 解除其它线程的等待，对于仅支持单线程应用, 可实现为空函数 |
 
+*[回到目录](#目录)*
 ## <a name="MQTT和HTTP通道功能需要">MQTT和HTTP通道功能需要</a>
 
 | 函数名                   | 说明                                                                    |
@@ -1394,6 +1441,7 @@ SDK编译的产物在编译成功之后都存放在 `output` 目录下:
 | HAL_Random               | 随机数函数, 接受一个无符号数作为范围, 返回0到该数值范围内的随机无符号数 |
 | HAL_Srandom              | 随机数播种函数, 使`HAL_Random`的返回值每个执行序列各不相同, 类似`srand` |
 
+*[回到目录](#目录)*
 ## <a name="CoAP通道功能需要">CoAP通道功能需要</a>
 
 | 函数名                   | 说明                                                                    |
@@ -1414,6 +1462,7 @@ SDK编译的产物在编译成功之后都存放在 `output` 目录下:
 | HAL_UDP_readTimeout      | 在指定时间内, 从一个UDP socket中读取数据包, 返回读到的字节数            |
 | HAL_UDP_write            | 阻塞的向一个UDP socket中发送数据包, 并返回发送的字节数                  |
 
+*[回到目录](#目录)*
 ## <a name="本地通信功能需要">本地通信功能需要</a>
 
 | 函数名                         | 说明                                                            |
@@ -1428,6 +1477,7 @@ SDK编译的产物在编译成功之后都存放在 `output` 目录下:
 | HAL_Kv_Del                     | 删除指定KV数据                                                  |
 | HAL_Kv_Erase_All               | 擦除所有的KV数据                                                |
 
+*[回到目录](#目录)*
 ## <a name="设备信息设置与获取需要">设备信息设置与获取需要</a>
 
 | 函数名                   | 说明                                                                    |
@@ -1446,6 +1496,7 @@ SDK编译的产物在编译成功之后都存放在 `output` 目录下:
 | HAL_SetProductKey        | 设置ProductKey, 三元组配置函数之一，必须实现                            |
 | HAL_SetProductSecret     | 设置ProductSecret，三元组配置函数之一，必须实现                         |
 
+*[回到目录](#目录)*
 ## <a name="OTA功能需要">OTA功能需要</a>
 
 | 函数名                             | 说明                                                        |
@@ -1454,6 +1505,7 @@ SDK编译的产物在编译成功之后都存放在 `output` 目录下:
 | HAL_Firmware_Persistence_Stop     | 固件持久化结束，包含OTA功能时必须实现                        |
 | HAL_Firmware_Persistence_Write    | 固件持久化写入，包含OTA功能时必须实现                        |
 
+*[回到目录](#目录)*
 ## <a name="本地定时任务功能需要">本地定时任务功能需要</a>
 
 | 函数名                             | 说明                                                        |
@@ -1462,10 +1514,12 @@ SDK编译的产物在编译成功之后都存放在 `output` 目录下:
 | HAL_UTC_Get                       | 获取UTC时间，单位ms                                          |
 
 
+*[回到目录](#目录)*
 ## <a name="WIFI配网功能需要">WIFI配网功能需要</a>
 请查看`include/imports/iot_import_awss.h`
 
 
+*[回到目录](#目录)*
 # <a name="C-SDK提供的功能API说明">C-SDK提供的功能API说明</a>
 
 以下为C-SDK提供的功能和对应的API, 用于让用户编写业务逻辑, 封装AT命令时, 也是基于这些API
@@ -1474,9 +1528,11 @@ SDK编译的产物在编译成功之后都存放在 `output` 目录下:
 
 如何使用这些API编写应用逻辑, 以代码`examples/*/*.c`的示例程序为准
 
+*[回到目录](#目录)*
 ## <a name="API列表">API列表</a>
 如下列出当前SDK代码提供的所有面向用户的API函数:
 
+*[回到目录](#目录)*
 ### <a name="基础版API">基础版API</a>
 
     $ cd include
@@ -1566,6 +1622,7 @@ SDK编译的产物在编译成功之后都存放在 `output` 目录下:
     82  IOT_Gateway_RRPC_Register
     83  IOT_Gateway_RRPC_Response
 
+*[回到目录](#目录)*
 ### <a name="linkkit单品API">linkkit单品API</a>
 
     $ cd include
@@ -1593,6 +1650,7 @@ SDK编译的产物在编译成功之后都存放在 `output` 目录下:
     20  linkkit_try_leave
     21  linkkit_yield
 
+*[回到目录](#目录)*
 ### <a name="linkkit网关API">linkkit网关API</a>
 
     $ cd include
@@ -1623,8 +1681,10 @@ SDK编译的产物在编译成功之后都存放在 `output` 目录下:
     23  linkkit_gateway_trigger_event_json
     24  linkkit_gateway_trigger_event_json_sync
 
+*[回到目录](#目录)*
 ## <a name="API详细说明">API详细说明</a>
 
+*[回到目录](#目录)*
 ### <a name="必选API">必选API</a>
 
 | 序号  | 函数名                       | 说明                                                               |
@@ -1635,6 +1695,7 @@ SDK编译的产物在编译成功之后都存放在 `output` 目录下:
 |  4    | IOT_DumpMemoryStats          | 调试函数, 打印内存的使用统计情况, 入参为1-5, 数字越大, 打印越详细  |
 |  5    | IOT_Ioctl                    | 设置SDK运行时可配置选项，详情见API注释                          |
 
+*[回到目录](#目录)*
 ### <a name="CoAP功能相关">CoAP功能相关</a>
 
 | 序号  | 函数名                       | 说明                                                                           |
@@ -1647,6 +1708,7 @@ SDK编译的产物在编译成功之后都存放在 `output` 目录下:
 |  6    | IOT_CoAP_SendMessage         | CoAP会话阶段, 连接已成功建立后调用, 组织一个完整的CoAP报文向服务器发送         |
 |  7    | IOT_CoAP_Yield               | CoAP会话阶段, 连接已成功建立后调用, 检查和收取服务器对`CoAP Request`的回复报文 |
 
+*[回到目录](#目录)*
 ### <a name="MQTT功能相关">MQTT功能相关</a>
 
 | 序号  | 函数名                       | 说明                                                                           |
@@ -1660,6 +1722,7 @@ SDK编译的产物在编译成功之后都存放在 `output` 目录下:
 |  7    | IOT_MQTT_Unsubscribe         | MQTT会话阶段, 组织一个完整的`MQTT UnSubscribe`报文, 向服务端发送取消订阅请求   |
 |  8    | IOT_MQTT_Yield               | MQTT会话阶段, MQTT主循环函数, 内含了心跳的维持, 服务器下行报文的收取等         |
 
+*[回到目录](#目录)*
 ### <a name="OTA功能相关">OTA功能相关</a>
 
 | 序号  | 函数名                       | 说明                                                                                   |
@@ -1676,6 +1739,7 @@ SDK编译的产物在编译成功之后都存放在 `output` 目录下:
 |  10   | IOT_OTA_RequestImage         | 可选API，向服务端请求固件下载                                                          |
 |  11   | IOT_OTA_GetConfig            | 可选API，向服务端请求远程配置                                                          |
 
+*[回到目录](#目录)*
 ### <a name="HTTP功能相关">HTTP功能相关</a>
 
 | 序号  | 函数名                       | 说明                                                                                   |
@@ -1686,6 +1750,7 @@ SDK编译的产物在编译成功之后都存放在 `output` 目录下:
 |  4    | IOT_HTTP_SendMessage         | Https会话阶段, 组织一个完整的HTTP报文向服务器发送,并同步获取HTTP回复报文               |
 |  5    | IOT_HTTP_Disconnect          | Https会话阶段, 关闭HTTP层面的连接, 但是仍然保持TLS层面的连接                           |
 
+*[回到目录](#目录)*
 ### <a name="设备影子相关">设备影子相关</a>
 
 | 序号  | 函数名                          | 说明                                                                            |
@@ -1702,6 +1767,7 @@ SDK编译的产物在编译成功之后都存放在 `output` 目录下:
 | 10    | IOT_Shadow_DeleteAttribute      | 删除一个已被成功注册的数据属性                                                  |
 | 11    | IOT_Shadow_Yield                | MQTT的主循环函数, 调用后接受服务端的下推消息, 更新本地的数据属性                |
 
+*[回到目录](#目录)*
 ### <a name="主子设备相关(老版本接口，不推荐使用)">主子设备相关(老版本接口，不推荐使用)</a>
 
 | 序号  | 函数名                          | 说明                                                                            |
@@ -1721,6 +1787,7 @@ SDK编译的产物在编译成功之后都存放在 `output` 目录下:
 | 13    | IOT_Gateway_Get_Config          | 向conifg/get topic发送包并等待回复（TOPIC_CONFIG_REPLY 回复）                   |
 | 14    | IOT_Gateway_Publish_Found_List  | 发现设备列表上报                                                                |
 
+*[回到目录](#目录)*
 ### <a name="linkkit单品相关">linkkit单品相关</a>
 
 | 序号  | 函数名                          | 说明                                                                            |
@@ -1747,6 +1814,7 @@ SDK编译的产物在编译成功之后都存放在 `output` 目录下:
 | 20    | linkkit_is_end                  | 获取linkkit结束标志                                                             |
 | 21    | linkkit_trigger_extended_info_operate | 设备拓展信息上报或删除                                                    |
 
+*[回到目录](#目录)*
 ### <a name="linkkit_gateway网关相关">linkkit_gateway网关相关</a>
 | 序号  | 函数名                          | 说明                                                                            |
 |-------|---------------------------------|---------------------------------------------------------------------------------|
@@ -1777,10 +1845,13 @@ SDK编译的产物在编译成功之后都存放在 `output` 目录下:
 
 网关API详细调用方法请查看`examples/linkkit/linkkit_example_gateway.c`
 
+*[回到目录](#目录)*
 # <a name="应用场景说明">应用场景说明</a>
+*[回到目录](#目录)*
 ## <a name="1. MQTT站点配置">1. MQTT站点配置</a>
 在使用阿里云物联网套件连接阿里云时，需要指定MQTT需要连接的站点，在基础版和高级版中，站点配置方法如下：
 
+*[回到目录](#目录)*
 ### <a name="基础版">基础版</a>
 在`iotx-sdk-c/include/iot_export.h`中，枚举类型`iotx_cloud_domain_types_t`定义了当前可连接的MQTT站点：
 
@@ -1807,6 +1878,7 @@ SDK编译的产物在编译成功之后都存放在 `output` 目录下:
     
 在使用基础版MQTT接口连接阿里云时，使用`IOT_Ioctl`的`IOTX_IOCTL_SET_DOMAIN`选项设置要连接的站点，然后再使用`IOT_SetupConnInfo`来建立设备到阿里云的连接
 
+*[回到目录](#目录)*
 ### <a name="高级版">高级版</a>
 在`iotx-sdk-c/include/exports/linkkit_export.h`中，枚举类型`linkkit_cloud_domain_type_t`定义了当前可连接的MQTT站点：
 
@@ -1830,6 +1902,7 @@ SDK编译的产物在编译成功之后都存放在 `output` 目录下:
 - 注意事项：如果在阿里云物联网控制台申请的三元组与连接时使用的域名不符合，连接站点时会出现认证错误（错误码-35）。
 *例如：在阿里云物联网控制台的华东2站点申请的三元组，在物联网套件中应该连接华东2（上海）站点*
             
+*[回到目录](#目录)*
 ## <a name="2. TSL静态集成和动态拉取">2. TSL静态集成和动态拉取</a>
 
 物模型指将物理空间中的实体数字化，并在云端构建该实体的数据模型。在物联网平台中，定义物模型即定义产品功能。完成功能定义后，系统将自动生成该产品的物模型。
@@ -1845,6 +1918,7 @@ SDK编译的产物在编译成功之后都存放在 `output` 目录下:
 - 静态集成：指将TSL直接写到代码中，这时需要上图中选择导出物模型，将设备的TSL（JSON格式）导出到文件，并手动集成到代码中
 - 动态拉取：指在物联网套件运行时去云端拉取TSL
 
+*[回到目录](#目录)*
 ### <a name="TSL静态集成">TSL静态集成</a>
 如上所述，将设备的TSL（JSON格式）导出到文件后（默认文件名为model.json），由于C语言需要将字符串中的双引号`"`进行转义，所以需要将导出的TSL文件进行转义。
 
@@ -1861,6 +1935,7 @@ SDK编译的产物在编译成功之后都存放在 `output` 目录下:
 默认情况下，物联网套件编译单品版本的example，源代码位于`iotx-sdk-c/examples/linkkit`目录下的`linkkit_example_solo.c`，同目录下的`example_tsl_solo.data`为存放静态集成TSL的文件，
 将刚才`conv.txt`中的内容复制，替换`example_tsl_solo.data`文件中的`TSL_STRING`变量，重新编译即可（不要忘了将`linkkit_example_solo.c`中的三元组替换成该TSL对应产品下设备的三元组）。
 
+*[回到目录](#目录)*
 ### <a name="TSL动态拉取">TSL动态拉取</a>
 如果使用动态拉取TSL，就不用去替换代码中的静态TSL。
 
@@ -1880,10 +1955,12 @@ SDK编译的产物在编译成功之后都存放在 `output` 目录下:
 
 - 注意事项：在Makefile中设置的`CONFIG_MQTT_RX_MAXLEN`值会覆盖掉`iot_import_config.h`中设置的值
 
+*[回到目录](#目录)*
 #### <a name="高级版单品使用TSL动态拉取">高级版单品使用TSL动态拉取</a>
 默认情况下，在高级版单品的example（源代码位于`iotx-sdk-c/examples/linkkit`目录下的`linkkit_example_solo.c`）中，使用的是TSL静态集成。
 
 若要使用TSL动态拉取，只需要将`linkkit_start`的第二个入参`get_tsl_from_cloud`设为`1`即可。
 
+*[回到目录](#目录)*
 #### <a name="高级版网关使用TSL动态拉取">高级版网关使用TSL动态拉取</a>
 目前，高级版网关仅使用TSL动态拉取。
