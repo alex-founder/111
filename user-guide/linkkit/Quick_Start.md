@@ -14,6 +14,7 @@
             + [编译基础版例程](#编译基础版例程)
             + [运行基础版例程](#运行基础版例程)
         - [观察基础版例程](#观察基础版例程)
+            + [基础版初始化说明](#基础版初始化说明)
             + [观察消息上报](#观察消息上报)
             + [观察消息下推](#观察消息下推)
             + [观察控制台日志](#观察控制台日志)
@@ -27,6 +28,7 @@
             + [编译高级版例程](#编译高级版例程)
             + [运行高级版例程](#运行高级版例程)
         - [观察高级版例程](#观察高级版例程)
+            + [高级版初始化说明](#高级版初始化说明)
             + [观察属性的上报](#观察属性的上报)
             + [观察属性的设置](#观察属性的设置)
             + [观察事件的上报](#观察事件的上报)
@@ -157,7 +159,25 @@
 
 打开文件 `iotx-sdk-c/examples/mqtt/mqtt-example.c`, 编辑如下代码段, 填入之前[创建基础版产品和设备](#创建基础版产品和设备)步骤中得到的**设备三元组**:
 
-![image](https://linkkit-export.oss-cn-shanghai.aliyuncs.com/LP-%E4%BB%A3%E7%A0%81%E7%A4%BA%E4%BE%8B-mqtt-example-%E4%B8%89%E5%85%83%E7%BB%84%E4%BF%AE%E6%94%B9.png)
+```
+#if defined(SUPPORT_ITLS)
+
+...
+...
+
+#else
+
+    #if defined(ON_DAILY)
+        ...
+        ...
+    #else
+        #define PRODUCT_KEY             "a1ExpAkj9Hi"
+        #define DEVICE_NAME             "Example1"
+        #define DEVICE_SECRET           "cNzcn2Lbqzh4UiXKLwW77hxI9GFmcRgb"
+    #endif
+
+#endif
+```
 
 #### <a name="编译基础版例程">编译基础版例程</a>
 
@@ -251,13 +271,205 @@
 
 ### <a name="观察基础版例程">观察基础版例程</a>
 
+#### <a name="基础版初始化说明">基础版初始化说明</a>
+基础版示例代码位于 `examples/mqtt/mqtt-example.c`
+
+    int mqtt_client(void)
+    {
+        ...
+        ...
+
+在与服务器尝试建立MQTT连接前, 需要进行设备认证
+
+        if (0 != IOT_SetupConnInfo(__product_key, __device_name, __device_secret, (void **)&pconn_info)) {
+            EXAMPLE_TRACE("AUTH request failed!");
+            rc = -1;
+            goto do_exit;
+        }
+
+        /* Initialize MQTT parameter */
+        ...
+        ...
+
+尝试建立与服务器的MQTT连接
+
+        pclient = IOT_MQTT_Construct(&mqtt_params);
+        if (NULL == pclient) {
+            EXAMPLE_TRACE("MQTT construct failed");
+            rc = -1;
+            goto do_exit;
+        }
+
+尝试向"/a1ExpAkj9Hi/Example1/update"这个topic上报消息
+
+        ...
+        ...
+        topic_msg.payload = (void *)msg_pub;
+        topic_msg.payload_len = strlen(msg_pub);
+
+        rc = IOT_MQTT_Publish(pclient, TOPIC_UPDATE, &topic_msg);
+        if (rc < 0) {
+            IOT_MQTT_Destroy(&pclient);
+            EXAMPLE_TRACE("error occur when publish");
+            rc = -1;
+            goto do_exit;
+        }
+
+        EXAMPLE_TRACE("\n publish message: \n topic: %s\n payload: \%s\n rc = %d", TOPIC_UPDATE, topic_msg.payload, rc);
+
+订阅我们刚才在云端控制台上定义的"/a1ExpAkj9Hi/Example1/data"这个topic
+
+        rc = IOT_MQTT_Subscribe(pclient, TOPIC_DATA, IOTX_MQTT_QOS1, _demo_message_arrive, NULL);
+        if (rc < 0) {
+            IOT_MQTT_Destroy(&pclient);
+            EXAMPLE_TRACE("IOT_MQTT_Subscribe() failed, rc = %d", rc);
+            rc = -1;
+            goto do_exit;
+        }
+
+        IOT_MQTT_Yield(pclient, 200);
+
+        HAL_SleepMs(2000);
+
+        ...
+        ...
+
+尝试向"/a1ExpAkj9Hi/Example1/data"这个topic上报消息
+
+        do {
+            cnt++;
+            msg_len = snprintf(msg_pub, sizeof(msg_pub), "{\"attr_name\":\"temperature\", \"attr_value\":\"%d\"}", cnt);
+            ...
+            ...
+
+            rc = IOT_MQTT_Publish(pclient, TOPIC_DATA, &topic_msg);
+            if (rc < 0) {
+                EXAMPLE_TRACE("error occur when publish");
+                rc = -1;
+                break;
+            }
+            EXAMPLE_TRACE("packet-id=%u, publish topic msg=%s", (uint32_t)rc, msg_pub);
+
+处理收到的MQTT消息并调用订阅时注册的回调函数
+
+            IOT_MQTT_Yield(pclient, 200);
+
+            /* infinite loop if running with 'loop' argument */
+            if (user_argc >= 2 && !strcmp("loop", user_argv[1])) {
+                HAL_SleepMs(2000);
+                cnt = 0;
+            }
+
+        } while (cnt < 1);
+
+        ...
+        ...
+
+        return rc;
+    }
+
+初始化日志系统, 将SDK日志级别设置为Debug
+
+    int main(int argc, char **argv)
+    {
+        IOT_OpenLog("mqtt");
+        IOT_SetLogLevel(IOT_LOG_DEBUG);
+
+        ...
+        ...
+
+设置设备三元组到HAL中
+
+        HAL_SetProductKey(PRODUCT_KEY);
+        HAL_SetDeviceName(DEVICE_NAME);
+        HAL_SetDeviceSecret(DEVICE_SECRET);
+
+        ...
+
+选择要登录的服务器
+
+        int domain_type = IOTX_CLOUD_DOMAIN_SH;
+        IOT_Ioctl(IOTX_IOCTL_SET_DOMAIN, (void *)&domain_type);
+
+选择直连设备是否需要使用一型一密
+
+        int dynamic_register = 0;
+        IOT_Ioctl(IOTX_IOCTL_SET_DYNAMIC_REGISTER, (void *)&dynamic_register);
+
+开始例程
+
+        mqtt_client();
+
+打印SDK内存占用信息, 仅在Linux平台上当WITH_MEM_STATS=1时有效
+
+        IOT_DumpMemoryStats(IOT_LOG_DEBUG);
+
+关闭日志系统
+
+        IOT_CloseLog();
+
+        EXAMPLE_TRACE("out of sample!");
+
+        return 0;
+    }
+
 #### <a name="观察消息上报">观察消息上报</a>
+
+在执行`mqtt-example`示例程序时, 如果需要改变上报值, 只需修改如下代码片段即可:
+```
+examples/mqtt/mqtt-example.c
+...
+...
+    do {
+        /* Generate topic message */
+        cnt++;
+        msg_len = snprintf(msg_pub, sizeof(msg_pub), "{\"attr_name\":\"temperature\", \"attr_value\":\"%d\"}", cnt);
+        if (msg_len < 0) {
+            EXAMPLE_TRACE("Error occur! Exit program");
+            rc = -1;
+            break;
+        }
+
+        topic_msg.payload = (void *)msg_pub;
+        topic_msg.payload_len = msg_len;
+
+        rc = IOT_MQTT_Publish(pclient, TOPIC_DATA, &topic_msg);
+        if (rc < 0) {
+            EXAMPLE_TRACE("error occur when publish");
+            rc = -1;
+            break;
+        }
+...
+...
+上述代码中, msg_pub的值即为上报到topic: `/a1ExpAkj9Hi/Example1/data` 的值
+```
 
 如下日志信息显示样例程序正在通过`MQTT`的`Publish`类型消息, 上报业务数据到`/${prodcutKey}/${deviceName}/data`
 
     mqtt_client|309 :: packet-id=7, publish topic msg={"attr_name":"temperature", "attr_value":"1"}
 
 #### <a name="观察消息下推">观察消息下推</a>
+
+当SDK收到服务器的下推信息时, 会进入如下回调函数:
+```
+static void _demo_message_arrive(void *pcontext, void *pclient, iotx_mqtt_event_msg_pt msg)
+{
+    iotx_mqtt_topic_info_pt ptopic_info = (iotx_mqtt_topic_info_pt) msg->msg;
+
+    /* print topic name and topic message */
+    EXAMPLE_TRACE("----");
+    EXAMPLE_TRACE("packetId: %d", ptopic_info->packet_id);
+    EXAMPLE_TRACE("Topic: '%.*s' (Length: %d)",
+                  ptopic_info->topic_len,
+                  ptopic_info->ptopic,
+                  ptopic_info->topic_len);
+    EXAMPLE_TRACE("Payload: '%.*s' (Length: %d)",
+                  ptopic_info->payload_len,
+                  ptopic_info->payload,
+                  ptopic_info->payload_len);
+    EXAMPLE_TRACE("----");
+}
+```
 
 如下日志信息显示该消息因为是到达已被订阅的`Topic`, 所以又被服务器原样推送到基础版例程, 并进入相应的回调函数
 
@@ -490,7 +702,128 @@
     ...
 
 ### <a name="观察高级版例程">观察高级版例程</a>
+
+#### <a name="高级版初始化说明">高级版初始化说明</a>
+
+int linkkit_example()
+{
+    ...
+    ...
+
+用户回调函数, 高级版产生事件时, 会自动调用用户的回调函数
+    
+    linkkit_ops_t linkkit_ops = {
+        .on_connect           = on_connect,            /* connect handler */
+        .on_disconnect        = on_disconnect,         /* disconnect handler */
+        .raw_data_arrived     = raw_data_arrived,      /* receive raw data handler */
+        .thing_create         = thing_create,          /* thing created handler */
+        .thing_enable         = thing_enable,          /* thing enabled handler */
+        .thing_disable        = thing_disable,         /* thing disabled handler */
+        .thing_call_service   = thing_call_service,    /* self-defined service handler */
+        .thing_prop_changed   = thing_prop_changed,    /* property set handler */
+        .linkit_data_arrived  = linkit_data_arrived,   /* transparent transmission data handler */
+    };
+
+    EXAMPLE_TRACE("linkkit start");
+
+    /*
+     * linkkit start
+     * max_buffered_msg = 16, set the handle msg max numbers.
+     *     if it is enough memory, this number can be set bigger.
+     * if get_tsl_from_cloud = 0, it will use the default tsl [TSL_STRING]; if get_tsl_from_cloud =1, it will get tsl from cloud.
+     */
+
+启动Linkkit, 开始尝试与云端建立连接
+
+    if (-1 == linkkit_start(16, get_tsl_from_cloud, linkkit_loglevel_debug, &linkkit_ops, linkkit_cloud_domain_shanghai,
+                            &sample_ctx)) {
+        EXAMPLE_TRACE("linkkit start fail");
+        return -1;
+    }
+
+如果没有选择从云端动态拉取TSL, 那么在这里本地静态设置TSL
+
+    if (!get_tsl_from_cloud) {
+        /*
+         * if get_tsl_from_cloud = 0, set default tsl [TSL_STRING]
+         * please modify TSL_STRING by the TSL's defined.
+         */
+        linkkit_set_tsl(TSL_STRING, strlen(TSL_STRING));
+    }
+
+初始化Config OTA的回调函数
+
+    linkkit_cota_init(linkkit_cota_callback);
+
+初始化Firmware OTA的回调函数
+
+    linkkit_fota_init(linkkit_fota_callback);
+
+    EXAMPLE_TRACE("linkkit enter loop");
+
+此循环中尝试对设备的属性和事件进行上报
+
+    while (1) {
+        ...
+        ...
+    }
+
+高级版SDK正常退出
+
+        linkkit_end();
+
+        return 0;
+    }
+
+    int main(int argc, char **argv)
+    {
+
+初始化日志系统, 将SDK日志级别设置为Debug
+
+        IOT_OpenLog("linkkit");
+        IOT_SetLogLevel(IOT_LOG_DEBUG);
+
+        EXAMPLE_TRACE("start!\n");
+
+设置设备三元组到HAL中
+
+        HAL_SetProductKey("a13Npv1vjZ4");
+        HAL_SetDeviceName("example_zc");
+        HAL_SetDeviceSecret("ZlexLJ4G0aXiSwkGmUFWuZBLLySKcG8h");
+
+        /*
+         * linkkit dome
+         * please check document: https://help.aliyun.com/document_detail/73708.html
+         *         API introduce: https://help.aliyun.com/document_detail/68687.html
+         */
+        linkkit_example();
+
+打印SDK内存占用信息, 仅在Linux平台上当编译宏开关WITH_MEM_STATS=1时有效
+
+        IOT_DumpMemoryStats(IOT_LOG_DEBUG);
+
+关闭日志系统
+
+        IOT_CloseLog();
+
+        EXAMPLE_TRACE("out of sample!\n");
+
+        return 0;
+    }
+
+
 #### <a name="观察属性的上报">观察属性的上报</a>
+
+示例中使用`linkkit_post_property`上报属性:
+```
+/* 此函数在示例代码中每30s被调用一次 */
+int post_all_prop(sample_context_t *sample)
+{
+    /* 这里第二个参数填NULL表示上报所有属性 */
+    return linkkit_post_property(sample->thing, NULL, post_property_cb);
+}
+```
+
 对于属性(Property), 示例程序会每隔30s上报(Post)一次所有属性, 因为我们定义了一个属性 `DeviceStatus`, 所以应该看到如下日志:
 
     ```
@@ -515,6 +848,19 @@
 ![image](https://linkkit-export.oss-cn-shanghai.aliyuncs.com/LP-ADV-%E4%BA%A7%E5%93%81%E7%AE%A1%E7%90%86-%E4%BA%A7%E5%93%81%E8%AF%A6%E6%83%85-%E8%AE%BE%E5%A4%87%E8%B0%83%E8%AF%95-%E8%AE%BE%E7%BD%AE%E5%B1%9E%E6%80%A7.png)
 
 如上图所示, 选择 `DeviceStatus` 这个属性, 然后选择**设置**, 在下方的输入框中将"Hello World"填入该属性的值, 然后点击发送指令,
+
+在示例代码中当收到属性set请求时, 会进入如下回调函数:
+```
+static int thing_prop_changed(const void *thing_id, const char *property, void *ctx) {
+    ...
+    ...
+
+    /* 这里将被设置的属性值发送到云端, 这样在云端控制台才能看到属性的新值 */
+    response_id = linkkit_post_property(thing_id, property, post_property_cb);
+
+    EXAMPLE_TRACE("post property(%s) response id: %d\n", property, response_id);
+}
+```
 
 此时在设备端的日志中可以看到从服务端set下来的值:
 
@@ -546,6 +892,27 @@
 
 #### <a name="观察事件的上报">观察事件的上报</a>
 
+示例中使用`linkkit_post_property`上报属性:
+```
+/* 此函数在示例代码中每45s被调用一次 */
+int trigger_event(sample_context_t *sample)
+{
+    char event_output_identifier[64];
+    snprintf(event_output_identifier, sizeof(event_output_identifier), "%s.%s", EVENT_ERROR_IDENTIFIER,
+             EVENT_ERROR_OUTPUT_INFO_IDENTIFIER);
+
+    /* 设置Error事件的输出参数值 */
+    int errorCode = 0;
+    linkkit_set_value(linkkit_method_set_event_output_value,
+                      sample->thing,
+                      event_output_identifier,
+                      &errorCode, NULL);
+
+    /* 上报Error事件到云端 */
+    return linkkit_trigger_event(sample->thing, EVENT_ERROR_IDENTIFIER, post_property_cb);
+}
+```
+
 示例程序中 `Error` 事件(Event)是每45s上报一次, 日志如下:
 
     [inf] dm_msg_request_all(265): DM Send Message, URI: /sys/a1csED27mp7/AdvExample1/thing/event/Error/post, Payload: {"id":"36","version":"1.0","params":{"ErrorCode":0},"method":"thing.event.Error.post"}
@@ -566,6 +933,33 @@
 由于该服务的输入参数数据类型为int型, 标识为 `transparency`, 所以在下方的输入框中填入参数, 并点击**发送指令**:
 
 ![image](https://linkkit-export.oss-cn-shanghai.aliyuncs.com/LP-ADV-%E4%BA%A7%E5%93%81%E7%AE%A1%E7%90%86-%E4%BA%A7%E5%93%81%E8%AF%A6%E6%83%85-%E8%AE%BE%E5%A4%87%E8%B0%83%E8%AF%95-%E6%9C%8D%E5%8A%A1%E4%B8%8B%E5%8F%91.png)
+
+在设备端示例程序中, 当收到服务调用请求时, 会进入如下回调函数:
+```
+#ifdef RRPC_ENABLED
+    static int thing_call_service(const void *thing_id, const char *service, int request_id, int rrpc, void *ctx)
+#else
+    static int thing_call_service(const void *thing_id, const char *service, int request_id, void *ctx)
+#endif /* RRPC_ENABLED */
+{
+    sample_context_t *sample_ctx = ctx;
+
+    EXAMPLE_TRACE("service(%s) requested, id: thing@%p, request id:%d\n",
+                  service, thing_id, request_id);
+
+    /* 这里判断收到的服务调用请求的服务ID是否是Custom, 然后执行相关逻辑 */
+    if (strcmp(service, "Custom") == 0) {
+#ifdef RRPC_ENABLED
+        handle_service_custom(sample_ctx, thing_id, service, request_id, rrpc);
+#else
+        /* 在此函数中, 我们获取了服务调用的输入参数transparency的值, 将之加1赋值给输出参数Contrastratio, 然后上报给云端 */
+        handle_service_custom(sample_ctx, thing_id, service, request_id);
+#endif /* RRPC_ENABLED */
+    }
+
+    return 0;
+}
+```
 
 此时在设备端可以看到如下日志:
 

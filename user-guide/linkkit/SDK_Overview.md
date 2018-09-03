@@ -309,7 +309,7 @@ productKey是物联网平台为产品颁发的唯一标识. 这个参数很重�
 
 ### <a name="V2.2.1">V2.2.1</a>
 + 发布日期: 2018/08/31
-+ 下载链接: TBD
++ 下载链接: [linkkit2.2.1.tar.gz](https://linkkit-sdk-download.oss-cn-shanghai.aliyuncs.com/linkkit2.2.1.tar.gz)
 + 更新内容:
     - **新增一型一密/动态注册功能:** 此功能可简化产线生产流程, 使所有设备烧录同样的固件
     - **新增离线倒计时例程:** 用于[飞燕平台](https://living.aliyun.com)的本地倒计时场景演示

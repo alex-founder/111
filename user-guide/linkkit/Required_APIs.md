@@ -427,6 +427,8 @@
 | [HAL_Firmware_Persistence_Stop](#HAL_Firmware_Persistence_Stop)     | 固件持久化结束, 包含OTA功能时必须实现
 | [HAL_Firmware_Persistence_Write](#HAL_Firmware_Persistence_Write)   | 固件持久化写入, 包含OTA功能时必须实现
 
+更多OTA相关功能说明可查看[OTA服务](https://living.aliyun.com/doc#ysuxe6.html)。
+
 ### <a name="本地定时任务功能相关">本地定时任务功能相关</a>
 
 | 函数名                            | 说明
@@ -438,6 +440,7 @@
 ### <a name="WIFI配网功能相关">WIFI配网功能相关</a>
 请查看`include/imports/iot_import_awss.h`
 
+更多配网相关功能说明可查看[WiFi设备端开发指南](https://living.aliyun.com/doc#wifi.html)
 
 ## <a name="5.3 HAL层接口详解">5.3 HAL层接口详解</a>
 ### <a name="HAL_Aes128_Cbc_Decrypt">HAL_Aes128_Cbc_Decrypt</a>
@@ -655,15 +658,21 @@ typedef void *p_HAL_Aes128_t;
 
 原型
 ---
+```
+void HAL_Awss_Close_Monitor(void);
+```
 
 接口说明
 ---
+设置Wi-Fi网卡离开监听(Monitor)模式, 并开始以站点(Station)模式工作
 
 参数说明
 ---
+void
 
 返回值说明
 ---
+void
 
 -----
 
@@ -671,15 +680,40 @@ typedef void *p_HAL_Aes128_t;
 
 原型
 ---
+```
+int HAL_Awss_Connect_Ap(
+            _IN_ uint32_t connection_timeout_ms,
+            _IN_ char ssid[HAL_MAX_SSID_LEN],
+            _IN_ char passwd[HAL_MAX_PASSWD_LEN],
+            _IN_OPT_ enum AWSS_AUTH_TYPE auth,
+            _IN_OPT_ enum AWSS_ENC_TYPE encry,
+            _IN_OPT_ uint8_t bssid[ETH_ALEN],
+            _IN_OPT_ uint8_t channel);
+
+```
 
 接口说明
 ---
+要求Wi-Fi网卡连接指定热点(Access Point)的函数
 
 参数说明
 ---
+| 参数         | 数据类型       | 方向  |说明
+|--------------|---------------|-------|-------------------
+| connection_timeout_ms  | uint32_t   | 输入   | 连接AP的超时时间
+| ssid                   | char       | 输入   | 目的AP的SSID
+| passwd                 | char       | 输入   | 目的AP的PASSWORD
+| auth                   | enum       | 输入   | 目的AP的加密方式，HAL可以忽略
+| encry                  | enum       | 输入   | 目的AP的认证方式，HAL可以忽略
+| bssid                  | uint8_t    | 输入   | 目的AP的BSSID，该字段可能为NULL或设置为全0
+| channel                | uint8_t    | 输入   | 目的AP的信道，该字段可以忽略
 
 返回值说明
 ---
+| 值       | 说明
+|----------|-----------------
+| 0        | 连接AP&DHCP成功
+| -1       | 连接AP&DHCP失败
 
 -----
 
@@ -687,15 +721,21 @@ typedef void *p_HAL_Aes128_t;
 
 原型
 ---
+```
+int HAL_Awss_Get_Channelscan_Interval_Ms(void);
+```
 
 接口说明
 ---
+获取在每个信道(`channel`)上扫描的时间长度, 单位是毫秒
 
 参数说明
 ---
+void
 
 返回值说明
 ---
+时间长度, 单位是毫秒
 
 -----
 
@@ -703,15 +743,21 @@ typedef void *p_HAL_Aes128_t;
 
 原型
 ---
+```
+int HAL_Awss_Get_Connect_Default_Ssid_Timeout_Interval_Ms(void);
+```
 
 接口说明
 ---
+获取配网服务(`AWSS`)超时时长到达之后, 去连接默认SSID时的超时时长, 单位是毫秒
 
 参数说明
 ---
+void
 
 返回值说明
 ---
+时时长, 单位是毫秒
 
 -----
 
@@ -719,15 +765,26 @@ typedef void *p_HAL_Aes128_t;
 
 原型
 ---
+```
+int HAL_Awss_Get_Conn_Encrypt_Type(void);
+```
 
 接口说明
 ---
+获取零配，热点配网和路由器配网的安全等级
 
 参数说明
 ---
+void
 
 返回值说明
 ---
+| 值       | 说明
+|----------|-----------------
+| 3        | aes128cfb with aes-key per product and aes-iv = random
+| 4        | aes128cfb with aes-key per device and aes-iv = random
+| 5        | aes128cfb with aes-key per manufacture and aes-iv = random
+| others   | 无效
 
 -----
 
@@ -735,15 +792,29 @@ typedef void *p_HAL_Aes128_t;
 
 原型
 ---
+```
+int HAL_Awss_Get_Encrypt_Type(void);
+```
 
 接口说明
 ---
+获取`smartconfig`服务的安全等级
 
 参数说明
 ---
+void 
 
 返回值说明
 ---
+| 值       | 说明
+|----------|-----------------
+| 0        | open (no encrypt)
+| 1        | aes256cfb with default aes-key and aes-iv
+| 2        | aes128cfb with default aes-key and aes-iv
+| 3        | aes128cfb with aes-key per product and aes-iv = 0
+| 4        | aes128cfb with aes-key per device and aes-iv = 0
+| 5        | es128cfb with aes-key per manufacture and aes-iv = 0
+| others   | invalid
 
 -----
 
@@ -751,15 +822,21 @@ typedef void *p_HAL_Aes128_t;
 
 原型
 ---
+```
+int HAL_Awss_Get_Timeout_Interval_Ms(void);
+```
 
 接口说明
 ---
+获取配网服务(`AWSS`)的超时时间长度, 单位是毫秒
 
 参数说明
 ---
+void
 
 返回值说明
 ---
+超时时长, 单位是毫秒
 
 -----
 
@@ -767,15 +844,39 @@ typedef void *p_HAL_Aes128_t;
 
 原型
 ---
+```
+void HAL_Awss_Open_Monitor(_IN_ awss_recv_80211_frame_cb_t cb);
+```
 
 接口说明
 ---
+设置Wi-Fi网卡工作在监听(Monitor)模式, 并在收到802.11帧的时候调用被传入的回调函数
 
 参数说明
 ---
+| 参数         | 数据类型      | 方向  |说明
+|--------------|--------------|-------|-------------------
+| cb           | awss_recv_80211_frame_cb_t   | 输入   | 回调函数指针，当WiFi接收到帧时会调用此函数
+
+```
+/**
+ * @brief   802.11帧的处理函数, 可以将802.11 Frame传递给这个函数
+ *
+ * @param[in] buf @n 80211 frame buffer, or pointer to struct ht40_ctrl
+ * @param[in] length @n 80211 frame buffer length
+ * @param[in] link_type @n AWSS_LINK_TYPE_NONE for most rtos HAL,
+ *              and for linux HAL, do the following step to check
+ *              which header type the driver supported.
+ * @param[in] with_fcs @n 80211 frame buffer include fcs(4 byte) or not
+ * @param[in] rssi @n rssi of packet, range of [-127, -1]
+ */
+typedef int (*awss_recv_80211_frame_cb_t)(char *buf, int length,
+        enum AWSS_LINK_TYPE link_type, int with_fcs, signed char rssi);
+```
 
 返回值说明
 ---
+void
 
 -----
 
@@ -783,15 +884,28 @@ typedef void *p_HAL_Aes128_t;
 
 原型
 ---
+```
+void HAL_Awss_Switch_Channel(
+            _IN_ char primary_channel,
+            _IN_OPT_ char secondary_channel,
+            _IN_OPT_ uint8_t bssid[ETH_ALEN]);
+```
 
 接口说明
 ---
+设置Wi-Fi网卡切换到指定的信道(channel)上
 
 参数说明
 ---
+| 参数         | 数据类型      | 方向  |说明
+|--------------|--------------|-------|-------------------
+| primary_channel    | char    | 输入   | 首选信道
+| secondary_channel  | char    | 输入   | 辅助信道(信道带宽为40MHz时才会使用，信道宽度为20MHz是可以忽略该参数)
+| bssid              | uint8_t | 输入   | 次参数已废弃，可以忽略
 
 返回值说明
 ---
+void
 
 -----
 
@@ -799,15 +913,27 @@ typedef void *p_HAL_Aes128_t;
 
 原型
 ---
+```
+int HAL_Config_Read(_IN_ char *buffer, _IN_ int length);
+```
 
 接口说明
 ---
+在设备的持久化外部存储器比如Flash上, 从配置区域起始位置读取数据到指定的内存缓冲区中
 
 参数说明
 ---
+| 参数         | 数据类型      | 方向  |说明
+|--------------|--------------|-------|-------------------
+| buffer       | char *       | 输出   | 存放读取配置信息的缓冲区起始地址
+| length       | int          | 输入   | 将要读取的数据长度, 单位是字节(Byte)
 
 返回值说明
 ---
+| 值       | 说明
+|----------|-----------------
+| 0        | 读取成功
+| -1       | 读取失败
 
 -----
 
@@ -815,15 +941,27 @@ typedef void *p_HAL_Aes128_t;
 
 原型
 ---
+```
+int HAL_Config_Write(_IN_ const char *buffer, _IN_ int length);
+```
 
 接口说明
 ---
+在设备的持久化外部存储器比如Flash上, 把指定的内存缓冲区向配置区域起始位置写入
 
 参数说明
 ---
+| 参数         | 数据类型      | 方向  |说明
+|--------------|--------------|-------|-------------------
+| buffer       | char *       | 输入   | 存放要写到外存的数据的缓冲区
+| length       | int          | 输入   | 将要写入的数据长度, 单位是字节(Byte)
 
 返回值说明
 ---
+| 值       | 说明
+|----------|-----------------
+| 0        | 写入成功
+| -1       | 写入失败
 
 -----
 
@@ -968,15 +1106,21 @@ unsigned int HAL_DTLSSession_write(DTLSContext          *context,
 
 原型
 ---
+```
+void HAL_Firmware_Persistence_Start(void);
+```
 
 接口说明
 ---
+固件持久化功能开始
 
 参数说明
 ---
+void
 
 返回值说明
 ---
+void
 
 -----
 
@@ -984,15 +1128,21 @@ unsigned int HAL_DTLSSession_write(DTLSContext          *context,
 
 原型
 ---
+```
+int HAL_Firmware_Persistence_Stop(void);
+```
 
 接口说明
 ---
+固件持久化功能结束
 
 参数说明
 ---
+void
 
 返回值说明
 ---
+void
 
 -----
 
@@ -1000,15 +1150,24 @@ unsigned int HAL_DTLSSession_write(DTLSContext          *context,
 
 原型
 ---
+```
+int HAL_Firmware_Persistence_Write(_IN_ char *buffer, _IN_ uint32_t length);
+```
 
 接口说明
 ---
+固件持久化写入固件
 
 参数说明
 ---
+| 参数         | 数据类型      | 方向  |说明
+|--------------|--------------|-------|-------------------
+| buffer       | char *       | 输入   | 指向写入缓冲区的指针
+| length       | uint32_t     | 输入   | 写入的字节长度
 
 返回值说明
 ---
+实际写入的字节长度
 
 -----
 
@@ -1586,15 +1745,21 @@ void
 
 原型
 ---
+```
+int HAL_RF433_Get_Rssi_Dbm(void);
+```
 
 接口说明
 ---
+获取RF433的接收信号强度(`RSSI`) 
 
 参数说明
 ---
+void
 
 返回值说明
 ---
+信号强度数值, 单位是dBm
 
 -----
 
@@ -1998,15 +2163,24 @@ int32_t HAL_SSL_Write(_IN_ uintptr_t handle, _IN_ const char *buf, _IN_ int len,
 
 原型
 ---
+```
+int HAL_Sys_Net_Is_Ready(void);
+```
 
 接口说明
 ---
+检查系统网络是否可用
 
 参数说明
 ---
+void
 
 返回值说明
 ---
+| 值       | 说明
+|----------|-----------------
+| 0        | 网络不可用
+| 1        | 网络可用
 
 -----
 
@@ -2899,15 +3073,32 @@ int HAL_Vsnprintf(_OU_ char *str, _IN_ const int len, _IN_ const char *fmt, _IN_
 
 原型
 ---
+```
+int HAL_Wifi_Enable_Mgmt_Frame_Filter(
+            _IN_ uint32_t filter_mask,
+            _IN_OPT_ uint8_t vendor_oui[3],
+            _IN_ awss_wifi_mgmt_frame_cb_t callback);
+```
 
 接口说明
 ---
+ 在站点(Station)模式下使能或禁用对管理帧的过滤
 
 参数说明
 ---
+| 参数         | 数据类型      | 方向  |说明
+|--------------|--------------|-------|-------------------
+| filter_mask   | uint32_t    | 输入   | 帧过滤参
+| vendor_oui    | uint8_t     | 输入   | WiFi联盟分配的厂商OUI，如果OUI为NULL，表示不对OUI过滤，反之要根据OUI过滤
+| callback      | awss_wifi_mgmt_frame_cb_t  | 输入   | 
 
 返回值说明
 ---
+| 值       | 说明
+|----------|-----------------
+| = 0      | 发送成功
+| = -1     | 发送失败
+| = -2     | 不支持
 
 -----
 
@@ -2915,15 +3106,31 @@ int HAL_Vsnprintf(_OU_ char *str, _IN_ const int len, _IN_ const char *fmt, _IN_
 
 原型
 ---
+```
+int HAL_Wifi_Get_Ap_Info(
+            _OU_ char ssid[HAL_MAX_SSID_LEN],
+            _OU_ char passwd[HAL_MAX_PASSWD_LEN],
+            _OU_ uint8_t bssid[ETH_ALEN]);
+```
 
 接口说明
 ---
+获取所连接的热点(Access Point)的信息
 
 参数说明
 ---
+| 参数         | 数据类型      | 方向  |说明
+|--------------|--------------|-------|-------------------
+| ssid         | char         | 输出   | AP的SSID，该参数可能为NULL
+| passwd       | char         | 输出   | AP的Password，该参数为NULL
+| bssid        | uint8_t      | 输出   | AP的BSSID，该参数可能为NULL
 
 返回值说明
 ---
+| 值       | 说明
+|----------|-----------------
+| = 0      | 操作成功
+| = -1     | 操作失败
 
 -----
 
@@ -2931,15 +3138,24 @@ int HAL_Vsnprintf(_OU_ char *str, _IN_ const int len, _IN_ const char *fmt, _IN_
 
 原型
 ---
+```
+uint32_t HAL_Wifi_Get_IP(_OU_ char ip_str[HAL_IP_LEN], _IN_ const char *ifname);
+```
 
 接口说明
 ---
+获取Wi-Fi网口的IP地址, 点分十进制格式保存在字符串数组出参, 二进制格式则作为返回值, 并以网络字节序(大端)表达
 
 参数说明
 ---
+| 参数         | 数据类型      | 方向  |说明
+|--------------|--------------|-------|-------------------
+| ip_str       | char[]       | 输出   | 存放点分十进制格式的IP地址字符串的数组
+| ifname       | const char*  | 输入   | 指定Wi-Fi网络接口的名字
 
 返回值说明
 ---
+二进制形式的IP地址, 以网络字节序(大端)组织
 
 -----
 
@@ -2947,15 +3163,23 @@ int HAL_Vsnprintf(_OU_ char *str, _IN_ const int len, _IN_ const char *fmt, _IN_
 
 原型
 ---
+```
+char *HAL_Wifi_Get_Mac(_OU_ char mac_str[HAL_MAC_LEN]);
+```
 
 接口说明
 ---
+获取Wi-Fi网口的MAC地址, 格式应当是"XX:XX:XX:XX:XX:XX"
 
 参数说明
 ---
+| 参数         | 数据类型      | 方向  |说明
+|--------------|--------------|-------|-------------------
+| mac_str      | char         | 输出   | 指向缓冲区数组起始位置的字符指针
 
 返回值说明
 ---
+指向缓冲区数组起始位置的字符指针
 
 -----
 
@@ -2963,15 +3187,23 @@ int HAL_Vsnprintf(_OU_ char *str, _IN_ const int len, _IN_ const char *fmt, _IN_
 
 原型
 ---
+```
+char *HAL_Wifi_Get_Os_Version(_OU_ char version_str[STR_SHORT_LEN]);
+```
 
 接口说明
 ---
+获取Wi-Fi模块上的操作系统版本字符串
 
 参数说明
 ---
+| 参数         | 数据类型      | 方向  |说明
+|--------------|--------------|-------|-------------------
+|version_str   | char[]       | 输出   | 存放版本字符串的缓冲区数组
 
 返回值说明
 ---
+指向缓冲区数组的起始地址
 
 -----
 
@@ -2979,15 +3211,21 @@ int HAL_Vsnprintf(_OU_ char *str, _IN_ const int len, _IN_ const char *fmt, _IN_
 
 原型
 ---
+```
+int HAL_Wifi_Get_Rssi_Dbm(void);
+```
 
 接口说明
 ---
+获取Wi-Fi的接受信号强度(`RSSI`)
 
 参数说明
 ---
+void
 
 返回值说明
 ---
+信号强度数值，单位为dBm
 
 -----
 
@@ -2995,15 +3233,26 @@ int HAL_Vsnprintf(_OU_ char *str, _IN_ const int len, _IN_ const char *fmt, _IN_
 
 原型
 ---
+```
+int HAL_Wifi_Low_Power(_IN_ int timeout_ms);
+```
 
 接口说明
 ---
+使WiFi模组进入省电模式, 并持续一段时间
 
 参数说明
 ---
+| 参数         | 数据类型      | 方向  |说明
+|--------------|--------------|-------|-------------------
+| timeout_ms   | int          | 输入   | 指定在多长时间内, WiFi模组都处于省电模式, 单位是毫秒
 
 返回值说明
 ---
+| 值       | 说明
+|----------|-----------------
+| 0        | 设置成功
+| -1       | 设置失败
 
 -----
 
@@ -3011,15 +3260,26 @@ int HAL_Vsnprintf(_OU_ char *str, _IN_ const int len, _IN_ const char *fmt, _IN_
 
 原型
 ---
+```
+int HAL_Wifi_Scan(awss_wifi_scan_result_cb_t cb);
+```
 
 接口说明
 ---
+启动一WiFi的空中扫描，该API是一个阻塞操作，扫描没有完成不能结束。所有的AP列表手机完成后，一个一个通过回调函数告知AWSS
 
 参数说明
 ---
+| 参数         | 数据类型      | 方向  |说明
+|--------------|--------------|-------|-------------------
+| cb           | awss_wifi_scan_result_cb_t   | 输入   | 扫描通知回调函数
 
 返回值说明
 ---
+| 值       | 说明
+|----------|-----------------
+| 0        | 扫描正常结束
+| -1       | 其他情况
 
 -----
 
@@ -3027,12 +3287,39 @@ int HAL_Vsnprintf(_OU_ char *str, _IN_ const int len, _IN_ const char *fmt, _IN_
 
 原型
 ---
+```
+int HAL_Wifi_Send_80211_Raw_Frame(_IN_ enum HAL_Awss_Frame_Type type,
+                                  _IN_ uint8_t *buffer, _IN_ int len);
+
+```
 
 接口说明
 ---
+在当前信道(channel)上以基本数据速率(1Mbps)发送裸的802.11帧(raw 802.11 frame)
 
 参数说明
 ---
+| 参数         | 数据类型      | 方向  |说明
+|--------------|--------------|-------|-------------------
+| type         | enum HAL_Awss_Frame_Type   | 输入    | 查看`HAL_Awss_Frame_Type_t`定义，目前只支持`FRAME_BEACON`和`FRAME_PROBE_REQ`
+| buffer       | uint8_t *                  | 输入    | 80211裸数据帧，包括完整的MAC头和FCS域
+| len          | int                        | 输入    | 80211裸帧字节长度
+
+```
+/* 80211帧类型定义 */
+typedef enum HAL_Awss_Frame_Type {
+    FRAME_ACTION,
+    FRAME_BEACON,
+    FRAME_PROBE_REQ,
+    FRAME_PROBE_RESPONSE,
+    FRAME_DATA
+} HAL_Awss_Frame_Type_t;
+```
 
 返回值说明
 ---
+| 值       | 说明
+|----------|-----------------
+| = 0      | 发送成功
+| = -1     | 发送失败
+| = -2     | 不支持

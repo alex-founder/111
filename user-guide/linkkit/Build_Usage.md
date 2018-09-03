@@ -26,7 +26,12 @@
         - [用 make 为 arm-linux 编译](#用 make 为 arm-linux 编译)
         - [用 make 为庆科模组 MK3060/MK3080 编译](#用 make 为庆科模组 MK3060/MK3080 编译)
         - [用 make 为乐鑫模组 ESP8266 编译](#用 make 为乐鑫模组 ESP8266 编译)
-    * [4.5 用 make.settings 文件裁剪 C-SDK](#4.5 用 make.settings 文件裁剪 C-SDK)
+    * [4.5 典型产品的 make.settings 示例](#4.5 典型产品的 make.settings 示例)
+        - [不具有网关功能的WiFi模组](#不具有网关功能的WiFi模组)
+        - [具有网关功能的WiFi模组](#具有网关功能的WiFi模组)
+        - [GSM模组](#GSM模组)
+        - [基于Linux系统的网关](#基于Linux系统的网关)
+    * [4.6 用 make.settings 文件裁剪 C-SDK 详解](#4.6 用 make.settings 文件裁剪 C-SDK 详解)
         - [FEATURE_ALCS_ENABLED](#FEATURE_ALCS_ENABLED)
         - [FEATURE_COAP_COMM_ENABLED](#FEATURE_COAP_COMM_ENABLED)
         - [FEATURE_COAP_DTLS_SUPPORT](#FEATURE_COAP_DTLS_SUPPORT)
@@ -45,7 +50,7 @@
         - [FEATURE_SUPPORT_ITLS](#FEATURE_SUPPORT_ITLS)
         - [FEATURE_SUPPORT_TLS](#FEATURE_SUPPORT_TLS)
         - [FEATURE_WIFI_AWSS_ENABLED](#FEATURE_WIFI_AWSS_ENABLED)
-    * [4.6 在 Ubuntu/OSX 上使用 cmake 的编译示例](#4.6 在 Ubuntu/OSX 上使用 cmake 的编译示例)
+    * [4.7 在 Ubuntu/OSX 上使用 cmake 的编译示例](#4.7 在 Ubuntu/OSX 上使用 cmake 的编译示例)
         - [用 cmake 为64位Linux/OSX编译](#用 cmake 为64位Linux/OSX编译)
         - [用 cmake 为32位Linux/OSX编译](#用 cmake 为32位Linux/OSX编译)
         - [用 cmake 为arm-linux编译](#用 cmake 为arm-linux编译)
@@ -522,7 +527,7 @@
 ### <a name="用 make 为 arm-linux 编译">用 make 为 arm-linux 编译</a>
 *本节的例子, 在 [第三章 移植指南](#第三章 移植指南) 中也有描述, 是作为一个演示跨平台移植的典型, 会写的更为详细*
 
-安装32位工具链
+安装交叉编译工具链
 ---
     sudo apt-get install -y gcc-arm-linux-gnueabihf
 
@@ -699,9 +704,65 @@
 |------------|------
 | `libiot_sdk.a`  | SDK的主库, 提供了 `IOT_XXX` 接口和 `linkkit_xxx()` 接口
 
-## <a name="4.5 用 make.settings 文件裁剪 C-SDK">4.5 用 make.settings 文件裁剪 C-SDK</a>
+## <a name="4.5 典型产品的 make.settings 示例">4.5 典型产品的 make.settings 示例</a>
+> 解压之后, 打开功能配置文件 `make.settings`, 根据需要编辑配置项, 使用不同的编译配置, 编译输出的SDK内容以及examples都有所不同
+>
+> 以下针对C-SDK的客户中, 较多出现的几种产品形态, 给出典型的配置文件, **并在注释中说明为什么这样配置**
 
-解压之后, 打开功能配置文件 `make.settings`, 根据需要编辑配置项, 使用不同的编译配置, 编译输出的SDK内容以及examples都有所不同
+### <a name="不具有网关功能的WiFi模组">不具有网关功能的WiFi模组</a>
+这种场景下客户使用WiFi上行的MCU模组, 比如乐鑫ESP8266, 庆科MK3060等.
+
+这种场景下, 设备和阿里云直接的连接只用于它自己和云端的通信, 不会用于代理给其它嵌入式设备做消息上报和指令下发或固件升级等.
+
+    FEATURE_MQTT_COMM_ENABLED    = y          # 一般WiFi模组都有固定供电, 所以都采用MQTT的方式上云
+    FEATURE_MQTT_DIRECT          = y          # MQTT直连效率更高, 该选项只在部分海外设备上才会关闭
+    FEATURE_OTA_ENABLED          = y          # 一般WiFi模组的客户, 都会使用阿里提供的固件升级服务
+    FEATURE_SDK_ENHANCE          = y          # 一般WiFi模组片上资源充足, 可以容纳高级版, 所以打开
+    FEATURE_ENHANCED_GATEWAY     = n          # 如上述说明, 不具备高级版网关功能的场景, 当然关闭这个选项
+    FEATURE_WIFI_AWSS_ENABLED    = y          # 一般WiFi模组的客户, 都会使用阿里的配网app或sdk, 告诉模组SSID和密码
+    FEATURE_SUPPORT_TLS          = y          # 绝大多数的客户都是用标准的TLS协议连接公网
+    FEATURE_SUPPORT_ITLS         = n          # 阿里私有的iTLS标准和TLS是互斥的, 上面把TLS打开了, 这里必须关闭
+
+### <a name="具有网关功能的WiFi模组">具有网关功能的WiFi模组</a>
+这种场景下客户使用WiFi上行的MCU模组, 比如庆科MK3080等.
+
+这种场景下, 设备和阿里云直接的连接不仅用于它自己和云端的通信, 还会用于代理给其它嵌入式设备做消息上报和指令下发或固件升级等.
+
+    FEATURE_MQTT_COMM_ENABLED    = y          # 一般WiFi模组都有固定供电, 所以都采用MQTT的方式上云
+    FEATURE_MQTT_DIRECT          = y          # MQTT直连效率更高, 该选项只在部分海外设备上才会关闭
+    FEATURE_OTA_ENABLED          = y          # 一般WiFi模组的客户, 都会使用阿里提供的固件升级服务
+    FEATURE_SDK_ENHANCE          = y          # 一般WiFi模组片上资源充足, 可以容纳高级版, 所以打开
+    FEATURE_ENHANCED_GATEWAY     = y          # 如上述说明, 要具备高级版网关功能的场景, 当然打开这个选项
+    FEATURE_WIFI_AWSS_ENABLED    = y          # 一般WiFi模组的客户, 都会使用阿里的配网app或sdk, 告诉模组SSID和密码
+    FEATURE_SUPPORT_TLS          = y          # 绝大多数的客户都是用标准的TLS协议连接公网
+    FEATURE_SUPPORT_ITLS         = n          # 阿里私有的iTLS标准和TLS是互斥的, 上面把TLS打开了, 这里必须关闭
+
+### <a name="GSM模组">GSM模组</a>
+这种场景下设备直接连接2G网络
+
+    FEATURE_MQTT_COMM_ENABLED    = y          # 虽然CoAP更省电, 但不能做云端消息的及时下推, 所以目前GSM模组仍主要用MQTT的方式上云
+    FEATURE_MQTT_DIRECT          = y          # MQTT直连效率更高, 对网络远慢于WiFi的GSM模组而言, 直连开关必须打开
+    FEATURE_OTA_ENABLED          = y          # 一般GSM模组的客户, 也会使用阿里提供的固件升级服务
+    FEATURE_SDK_ENHANCE          = n          # GSM模组网速很慢, 资源较少, 所以这种模组的客户一般不会用高级版, 而只需要基础版的MQTT上云 
+    FEATURE_ENHANCED_GATEWAY     = n          # GSM模组一般不集成高级版(物模型)功能, 并且它也不会下联其它嵌入式设备分享MQTT上云通道
+    FEATURE_WIFI_AWSS_ENABLED    = n          # GSM模组不通过WiFi协议连接公网, 因此关闭WiFi配网的开关
+    FEATURE_SUPPORT_TLS          = y          # 绝大多数的客户都是用标准的TLS协议连接公网, 对GSM模组, 甚至可能连这个选项都关闭
+    FEATURE_SUPPORT_ITLS         = n          # GSM模组有不少是做不加密通信(FEATURE_SUPPORT_TLS = n), 有加密也是走TLS, 所以ITLS都是关闭的
+
+### <a name="基于Linux系统的网关">基于Linux系统的网关</a>
+比如家庭网关, 工业网关等, 一般是相对MCU模组来说, 性能强大的多, 资源丰富的多的设备
+
+    FEATURE_MQTT_COMM_ENABLED    = y          # 一般Linux网关都有固定供电, 所以都采用MQTT的方式上云
+    FEATURE_MQTT_DIRECT          = y          # MQTT直连效率更高, 该选项只在部分海外设备上才会关闭
+    FEATURE_OTA_ENABLED          = y          # 一般Linux网关的客户, 都会使用阿里提供的固件升级服务
+    FEATURE_SDK_ENHANCE          = y          # 一般Linux网关片上资源充足, 可以容纳高级版, 所以打开
+    FEATURE_ENHANCED_GATEWAY     = y          # 如上述说明, 要具备高级版网关功能的场景, 当然打开这个选项
+    FEATURE_WIFI_AWSS_ENABLED    = y          # 取决于Linux网关是否用WiFi做上行并使用阿里的配网app/sdk, 如果皆是, 则打开这个选项
+    FEATURE_SUPPORT_TLS          = y          # 绝大多数的客户都是用标准的TLS协议连接公网
+    FEATURE_SUPPORT_ITLS         = n          # 阿里私有的iTLS标准和TLS是互斥的, 上面把TLS打开了, 这里必须关闭
+
+## <a name="4.6 用 make.settings 文件裁剪 C-SDK 详解">4.6 用 make.settings 文件裁剪 C-SDK 详解</a>
+> 解压之后, 打开功能配置文件 `make.settings`, 根据需要编辑配置项, 使用不同的编译配置, 编译输出的SDK内容以及examples都有所不同
 
 默认的配置状态为
 ---
@@ -843,7 +904,7 @@
 + 它不是其它 `FEATURE_XXX` 的依赖之一
 + 对应的源码目录是 `src/services/awss`
 
-## <a name="4.6 在 Ubuntu/OSX 上使用 cmake 的编译示例">4.6 在 Ubuntu/OSX 上使用 cmake 的编译示例</a>
+## <a name="4.7 在 Ubuntu/OSX 上使用 cmake 的编译示例">4.7 在 Ubuntu/OSX 上使用 cmake 的编译示例</a>
 > 本节的示例适用于开发者的开发环境是 Ubuntu16.04 的Linux主机, 或者是Apple公司的 OSX 的MacOS的情况
 
 **这些例子都是在64位主机上的执行情况, 推荐您和阿里开发者一样, 安装64位的操作系统**
