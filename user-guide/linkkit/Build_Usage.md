@@ -2,6 +2,7 @@
 + [第四章 构建配置系统](#第四章 构建配置系统)
     * [4.1 基于 make 的编译系统详解](#4.1 基于 make 的编译系统详解)
         - [常用命令](#常用命令)
+        - [输出说明](#输出说明)
         - [组成部分](#组成部分)
             + [用户输入](#用户输入)
             + [构建单元](#构建单元)
@@ -109,6 +110,52 @@
 | `make help`         | **打印帮助文本**
 | `make <directory>`  | **单独编译被<directory>指定的目录, 或者叫构建单元**
 | `make test`         | **运行指定的测试集程序, 统计显示测试例的通过率和源代码的覆盖率**
+
+### <a name="输出说明">输出说明</a>
+成功编译的话, 最终会打印如下表格, 这是每个模块的ROM占用, 以及静态RAM占用的统计
+
+    | MODULE NAME                                 | ROM      | RAM      | BSS      | DATA |
+    |---------------------------------------------|----------|----------|----------|------|
+    | src/services/linkkit/dm                     | 174964   | 256      | 244      | 12   |
+    | src/ref-impl/tls                            | 156594   | 8992     | 8920     | 72   |
+    | src/protocol/alcs                           | 73517    | 281      | 241      | 40   |
+    | src/services/awss                           | 64675    | 1639     | 1584     | 55   |
+    | src/infra/utils                             | 48015    | 368      | 296      | 72   |
+    | src/protocol/mqtt                           | 44310    | 64       | 48       | 16   |
+    | src/services/uOTA                           | 43527    | 916      | 556      | 360  |
+    | src/ref-impl/hal                            | 31626    | 84       | 60       | 24   |
+    | src/services/linkkit/cm                     | 30943    | 99       | 99       | 0    |
+    | src/sdk-impl                                | 14601    | 40       | 40       | 0    |
+    | src/infra/system                            | 6707     | 1504     | 1432     | 72   |
+    | src/infra/log                               | 2112     | 528      | 528      | 0    |
+    |---------------------------------------------|----------|----------|----------|------|
+    | - IN TOTAL -                                | 691591   | 14771    | 14048    | 723  |
+
+**用户需要关注的输出产品都在 `output/release` 目录下:**
+
+output/release/lib
+---
+| 产物文件名 | 说明
+|------------|------
+| `libiot_hal.a`  | HAL接口层的参考实现, 提供了 `HAL_XXX()` 接口
+| `libiot_sdk.a`  | SDK的主库, 提供了 `IOT_XXX` 接口和 `linkkit_xxx()` 接口
+| `libiot_tls.a`  | 裁剪过的 `mbedtls`, 提供了 `mbedtls_xxx()` 接口, 支撑 `libiot_hal.a`
+
+output/release/include
+---
+| 产物文件名 | 说明
+|------------|------
+| `iot_import.h`  | 列出所有需要C-SDK的用户提供给SDK的底层支撑接口, 详见 [第五章 HAL说明](#第五章 HAL说明) 部分
+| `iot_export.h`  | 列出所有C-SDK向用户提供的底层API编程接口, 详见 [第六章 API说明](#第六章 API说明) 部分
+
+output/release/bin
+---
+如果是在主机环境下不做交叉编译(Ubuntu/OSX/Windows), 是可以产生主机版本的demo程序, 可以直接运行的, 比如
+
+| 产物文件名 | 说明
+|------------|------
+| `linkkit-example-solo`  | 高级版的例程, 可演示 `linkkit_xxx()` 接口的使用
+| `mqtt-example`          | 基础版的例程, 可演示 `IOT_XXX()` 接口的使用
 
 ### <a name="组成部分">组成部分</a>
 

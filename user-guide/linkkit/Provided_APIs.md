@@ -11,6 +11,7 @@
         - [高级版(旧版)单品场景API](#高级版(旧版)单品场景API)
         - [高级版(旧版)网关场景API](#高级版(旧版)网关场景API)
         - [主子设备相关(老版本接口, 不推荐使用)](#主子设备相关(老版本接口, 不推荐使用))
+        - [WiFi配网API](#WiFi配网API)
     * [6.2 API接口清单](#6.2 API接口清单)
         - [基础版API清单](#基础版API清单)
         - [高级版单品场景API清单](#高级版单品场景API清单)
@@ -672,6 +673,10 @@ int trigger_event(sample_context_t *sample)
 | [IOT_Gateway_Publish_Found_List](#IOT_Gateway_Publish_Found_List)       | 发现设备列表上报
 |                                                                         |
 |                                                                         |
+
+### <a name="WiFi配网API">WiFi配网API</a>
+WiFi配网相关API说明请查看[WiFi设备端开发指南](https://living.aliyun.com/doc#wifi.html)。
+
 
 ## <a name="6.2 API接口清单">6.2 API接口清单</a>
 如下列出当前SDK代码提供的所有面向用户的API函数:

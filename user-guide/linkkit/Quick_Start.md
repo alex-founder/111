@@ -66,6 +66,8 @@
 
 登入之后, 鼠标悬停在**产品**上, 弹出层叠菜单, 并单击**物联网平台**
 
+*注: 本处以在物联网平台创建产品作为示例，用户也可以在生活物联网平台 (https://living.aliyun.com) 上进行产品创建*
+
 ![image](https://linkkit-export.oss-cn-shanghai.aliyuncs.com/%E4%BA%A7%E5%93%81-%E7%89%A9%E8%81%94%E7%BD%91%E5%B9%B3%E5%8F%B0.png)
 
 然后, 点击**立即开通**, 即可进入IoT控制台
