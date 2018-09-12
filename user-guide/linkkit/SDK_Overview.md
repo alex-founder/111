@@ -339,7 +339,7 @@ productKey是物联网平台为产品颁发的唯一标识. 这个参数很重�
 
 ### <a name="V2.1.0">V2.1.0</a>
 + 发布日期: 2018/03/20
-+ 下载链接: [RELEASED_V2_03_20180320.zip](https://github.com/aliyun/iotkit-embedded/archive/RELEASED_V2_1_20180320.zip)
++ 下载链接: [RELEASED_V2_1_20180320.zip](https://github.com/aliyun/iotkit-embedded/archive/RELEASED_V2_1_20180320.zip)
 + 更新内容:
     - **新增cmake编译系统:** 可以在linux下或者windows下以cmake编译
     - **新增物模型支持:** 可以支持物模型抽象, 提供属性/服务/事件的相关接口, 可参考[相关公告](https://help.aliyun.com/document_detail/88019.html)

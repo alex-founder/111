@@ -20,6 +20,7 @@
     * [C.4 设备标签](#C.4 设备标签)
         - [设备标签信息上报](#设备标签信息上报)
         - [设备标签信息删除](#设备标签信息删除)
+    * [C.5 时间同步](#C.5 时间同步)
 
 
 # <a name="附录C 云端接口说明">附录C 云端接口说明</a>
@@ -41,7 +42,8 @@
 - 动态注册URL: https://{host}/auth/register/device (host根据所选区域不同而有所差别)
 - HTTP Method: post
 
-Request:
+Request
+---
 
     POST /auth/register/device  HTTP/1.1
     Host: iot-auth.cn-shanghai.aliyuncs.com
@@ -49,7 +51,8 @@ Request:
     Content-Length: 123
     productKey=1234556554&deviceName=deviceName1234&random=567345&sign=adfv123hdfdh&signMethod=hmac_md5
 
-Response:
+Response
+---
 
     {
         "code" : 200,
@@ -92,7 +95,8 @@ Response:
 - 上行topic: /sys/{productKey}/{deviceName}/thing/sub/register
 - 下行topic: /sys/{productKey}/{deviceName}/thing/sub/register_reply
 
-Request:
+Request
+---
 
     {
         "id":"4",
@@ -104,7 +108,8 @@ Request:
         "method":"thing.sub.register"
     }
 
-Response:
+Response
+---
 
     {
         "code":200,
@@ -144,7 +149,8 @@ Response:
 - 上行topic: /sys/{productKey}/{deviceName}/thing/sub/unregister
 - 下行topic: /sys/{productKey}/{deviceName}/thing/sub/unregister_reply
 
-Request:
+Request
+---
 
     {
         "id":"12",
@@ -156,7 +162,8 @@ Request:
         "method":"thing.sub.unregister"
     }
 
-Response:
+Response
+---
 
     {
         "code":200,
@@ -185,7 +192,8 @@ Response:
 - 上行topic: /sys/{productKey}/{deviceName}/thing/topo/add
 - 下行topic: /sys/{productKey}/{deviceName}/thing/topo/add_reply
 
-Request:
+Request
+---
 
     {
         "id":"4",
@@ -201,7 +209,8 @@ Request:
         "method":"thing.topo.add"
     }
 
-Response:
+Response
+---
 
     {
         "code":200,
@@ -226,7 +235,8 @@ Response:
 - 上行topic: /sys/{productKey}/{deviceName}/thing/topo/delete
 - 下行topic: /sys/{productKey}/{deviceName}/thing/topo/delete_reply
 
-Request:
+Request
+---
 
     {
         "id":"11",
@@ -238,7 +248,8 @@ Request:
         "method":"thing.topo.delete"
     }
 
-Response:
+Response
+---
 
     {
         "code":200,
@@ -261,7 +272,8 @@ Response:
 - 上行topic: /sys/{productKey}/{deviceName}/thing/topo/get
 - 下行topic: /sys/{productKey}/{deviceName}/thing/topo/get_reply
 
-Request:
+Request
+---
 
     {
         "id":"3",
@@ -270,7 +282,8 @@ Request:
         "method":"thing.topo.get"
     }
 
-Response:
+Response
+---
 
     {
         "code":200,
@@ -297,7 +310,8 @@ Response:
 - 上行topic: /sys/{productKey}/{deviceName}/thing/list/found
 - 下行topic: /sys/{productKey}/{deviceName}/thing/list/found_reply
 
-Request:
+Request
+---
 
     {
         "id":"8",
@@ -309,7 +323,8 @@ Request:
         "method":"thing.list.found"
     }
 
-Response:
+Response
+---
 
     {
         "code":200,
@@ -336,7 +351,8 @@ Response:
 - 下行topic: /sys/{productKey}/{deviceName}/thing/topo/add/notify
 - 上行topic: /sys/{productKey}/{deviceName}/thing/topo/add/notify_reply
 
-Request:
+Request
+---
 
     {
         "id" : "7659872",
@@ -348,7 +364,8 @@ Request:
         "method":"thing.topo.add.notify"
     }
 
-Response:
+Response
+---
 
     {
         "id":"7659872",
@@ -382,7 +399,8 @@ Response:
 - 上行topic: /sys/{productKey}/{deviceName}/thing/event/property/post
 - 下行topic: /sys/{productKey}/{deviceName}/thing/event/property/post_reply
 
-Request:
+Request
+---
 
     {
         "id":"9",
@@ -393,7 +411,8 @@ Request:
         "method":"thing.event.property.post"
     }
 
-Response:
+Response
+---
 
     {
         "code":200,
@@ -435,7 +454,8 @@ Response:
 - 下行topic: /sys/{productKey}/{deviceName}/thing/service/property/set
 - 上行topic: /sys/{productKey}/{deviceName}/thing/service/property/set_reply
 
-Request:
+Request
+---
 
     {
         "method":"thing.service.property.set",
@@ -446,7 +466,8 @@ Request:
         "version":"1.0.0"
     }
 
-Response:
+Response
+---
 
     {
         "id":"79665347",
@@ -482,7 +503,8 @@ Response:
 - 下行topic: /sys/{productKey}/{deviceName}/thing/service/property/get
 - 上行topic: /sys/{productKey}/{deviceName}/thing/event/property/post
 
-Request:
+Request
+---
 
     {
         "id" : "78283493",
@@ -493,7 +515,8 @@ Request:
         "method":"thing.service.property.get"
     }
 
-Response:
+Response
+---
 
     {
         "id":"9",
@@ -512,7 +535,8 @@ Response:
 - 下行topic: /sys/{productKey}/{deviceName}/thing/service/{serviceid}
 - 上行topic: /sys/{productKey}/{deviceName}/thing/service/{serviceid}_reply.
 
-Request:
+Request
+---
 
     {
         "method":"thing.service.Custom",
@@ -523,7 +547,8 @@ Request:
         "version":"1.0.0"
     }
 
-Response:
+Response
+---
 
     {
         "id":"79687227",
@@ -551,7 +576,8 @@ Response:
 - 下行topic: /sys/${productKey}/${deviceName}/rrpc/request/${messageId}
 - 上行topic: /sys/${productKey}/${deviceName}/rrpc/response/${messageId}
 
-Request:
+Request
+---
 
     {
         "method":"thing.service.SyncService",
@@ -562,7 +588,8 @@ Request:
         "version":"1.0.0"
     }
 
-Response:
+Response
+---
 
     {
         "id":"79699490",
@@ -574,7 +601,7 @@ Response:
 
 说明: 用户可通过该接口进行同步服务调用, 上述示例中, **SyncService**为服务ID, **FromCloud**为服务的输入参数(从云端发送到设备), **ToCloud**为服务的输出参数(从设备发送到云端)
 
-注意事项:
+<!-- 注意事项:
 ---
 
 - 使用方法:
@@ -625,7 +652,8 @@ Response:
 - 上行topic: /sys/{productKey}/{deviceName}/thing/deviceinfo/update
 - 下行topic: /sys/{productKey}/{deviceName}/thing/deviceinfo/update_reply
 
-Request:
+Request
+---
 
     {
         "id":"4",
@@ -637,7 +665,8 @@ Request:
         "method":"thing.deviceinfo.update"
     }
 
-Response:
+Response
+---
 
     {
         "code":200,
@@ -672,7 +701,8 @@ Response:
 - 上行topic: /sys/{productKey}/{deviceName}/thing/deviceinfo/delete
 - 下行topic: /sys/{productKey}/{deviceName}/thing/deviceinfo/delete_reply
 
-Request:
+Request
+---
 
     {
         "id":"117",
@@ -683,7 +713,8 @@ Request:
         "method":"thing.deviceinfo.delete"
     }
 
-Response:
+Response
+---
 
     {
         "code":200,
@@ -710,3 +741,21 @@ Response:
         /* 网关接口 */
         int linkkit_gateway_delete_extinfos(int devid, linkkit_extinfo_t *extinfos, int nb_extinfos, int timeout_ms);
 
+## <a name="C.5 时间同步">C.5 时间同步</a>
+
+- 上行topic: /ext/ntp/{productKey}/{deviceName}/request
+- 下行topic: /ext/ntp/{productKey}/{deviceName}/response
+
+Request
+---
+
+    {"deviceSendTime":"1234"}
+
+Response
+---
+
+    {
+        "deviceSendTime": "1234",
+        "serverSendTime": "1531382849743",
+        "serverRecvTime": "1531382849743"
+    }
