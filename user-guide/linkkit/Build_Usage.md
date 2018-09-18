@@ -20,8 +20,8 @@
             + [CONFIG_MQTT_TX_MAXLEN](#CONFIG_MQTT_TX_MAXLEN)
             + [CONFIG_MQTT_RX_MAXLEN](#CONFIG_MQTT_RX_MAXLEN)
     * [4.3 基于 make 编译到主机例程](#4.3 基于 make 编译到主机例程)
-        - [用 make 为64位Linux/OSX编译](#用 make 为64位Linux/OSX编译)
-        - [用 make 为32位Linux/OSX编译](#用 make 为32位Linux/OSX编译)
+        - [用 make 为64位Linux编译](#用 make 为64位Linux编译)
+        - [用 make 为32位Linux编译](#用 make 为32位Linux编译)
         - [用 make 为Windows编译](#用 make 为Windows编译)
     * [4.4 基于 make 交叉编译到嵌入式平台](#4.4 基于 make 交叉编译到嵌入式平台)
         - [用 make 为 arm-linux 编译](#用 make 为 arm-linux 编译)
@@ -51,9 +51,9 @@
         - [FEATURE_SUPPORT_ITLS](#FEATURE_SUPPORT_ITLS)
         - [FEATURE_SUPPORT_TLS](#FEATURE_SUPPORT_TLS)
         - [FEATURE_WIFI_AWSS_ENABLED](#FEATURE_WIFI_AWSS_ENABLED)
-    * [4.7 在 Ubuntu/OSX 上使用 cmake 的编译示例](#4.7 在 Ubuntu/OSX 上使用 cmake 的编译示例)
-        - [用 cmake 为64位Linux/OSX编译](#用 cmake 为64位Linux/OSX编译)
-        - [用 cmake 为32位Linux/OSX编译](#用 cmake 为32位Linux/OSX编译)
+    * [4.7 在 Ubuntu 上使用 cmake 的编译示例](#4.7 在 Ubuntu 上使用 cmake 的编译示例)
+        - [用 cmake 为64位Linux编译](#用 cmake 为64位Linux编译)
+        - [用 cmake 为32位Linux编译](#用 cmake 为32位Linux编译)
         - [用 cmake 为arm-linux编译](#用 cmake 为arm-linux编译)
         - [用 cmake 为Windows编译](#用 cmake 为Windows编译)
 
@@ -61,17 +61,17 @@
 
 目前设备端C-SDK的构建配置系统支持以下的编译方式
 ---
-+ 在`Linux`上或者`MacOS`上以`GNU Make` + `各种工具链`编译, 产生`各种嵌入式目标架构`的SDK, 本章将演示
-    * 以`GNU Make` + `gcc`, 产生适用于 `64位Linux/OSX` 的SDK以及可执行例程
-    * 以`GNU Make` + `gcc`, 产生适用于 `32位Linux/OSX` 的SDK以及可执行例程
++ 在`Linux`上以`GNU Make` + `各种工具链`编译, 产生`各种嵌入式目标架构`的SDK, 本章将演示
+    * 以`GNU Make` + `gcc`, 产生适用于 `64位Linux` 的SDK以及可执行例程
+    * 以`GNU Make` + `gcc`, 产生适用于 `32位Linux` 的SDK以及可执行例程
     * 以`GNU Make` + `i686-w64-mingw32-gcc`, 产生适用于 `Windows` 平台的SDK以及可执行例程
     * 以`GNU Make` + `arm-none-eabi-gcc`, 产生适用于 `MK3060/MK3080` 嵌入式平台的SDK
     * 以`GNU Make` + `xtensa-lx106-elf-gcc`, 产生适用于 `ESP8266` 嵌入式平台的SDK
     * 以`GNU Make` + `arm-linux-gnueabihf-gcc`, 产生适用于 `arm-linux` 嵌入式平台的SDK
 
-+ 在`Linux`上或者`MacOS`上以`cmake` + `各种工具链`编译, 产生`各种目标架构`的SDK, 本章将演示
-    * 以`cmake` + `gcc`, 产生适用于 `64位Linux/OSX` 的SDK
-    * 以`cmake` + `gcc`, 产生适用于 `32位Linux/OSX` 的SDK
++ 在`Linux`上以`cmake` + `各种工具链`编译, 产生`各种目标架构`的SDK, 本章将演示
+    * 以`cmake` + `gcc`, 产生适用于 `64位Linux` 的SDK
+    * 以`cmake` + `gcc`, 产生适用于 `32位Linux` 的SDK
     * 以`cmake` + `arm-linux-gnueabihf-gcc`, 产生适用于 `arm-linux` 嵌入式平台的SDK
     * 以`cmake` + `i686-w64-mingw32-gcc`, 产生适用于 `Windows` 平台的SDK
 
@@ -90,7 +90,7 @@
 + **功能模块维度:** `make.settings`
 + **资源伸缩维度:** `include/imports/iot_import_config.h`
 
-> 本章先说明编译系统及其 config 文件的语法, 接着演示如何交叉编译到嵌入式目标平台和不交叉的编译 Linux/OSX/Windows 主机 demo 版本
+> 本章先说明编译系统及其 config 文件的语法, 接着演示如何交叉编译到嵌入式目标平台和不交叉的编译 Linux/Windows 主机 demo 版本
 >
 > 再说明配置相关的文件 make.settings 的用法, 介绍在平台选定之后, 如何裁剪和配置功能
 >
@@ -150,7 +150,7 @@ output/release/include
 
 output/release/bin
 ---
-如果是在主机环境下不做交叉编译(Ubuntu/OSX/Windows), 是可以产生主机版本的demo程序, 可以直接运行的, 比如
+如果是在主机环境下不做交叉编译(Ubuntu/Windows), 是可以产生主机版本的demo程序, 可以直接运行的, 比如
 
 | 产物文件名              | 说明
 |-------------------------|-----------------------------------------------------
@@ -364,12 +364,12 @@ output/release/bin
 + 起作用的源码目录在 `src/services/linkkit`
 
 ## <a name="4.3 基于 make 编译到主机例程">4.3 基于 make 编译到主机例程</a>
-> 本节的示例适用于开发者的开发环境是 Ubuntu16.04 的Linux主机, 或者是Apple公司的 OSX 的MacOS的情况
+> 本节的示例适用于开发者的开发环境是 Ubuntu16.04 的Linux主机的情况
 
 **这些例子都是在64位主机上的执行情况, 推荐您和阿里开发者一样, 安装64位的操作系统**
 
-### <a name="用 make 为64位Linux/OSX编译">用 make 为64位Linux/OSX编译</a>
-> 希望编译产物适用于64位的Ubuntu或OSX的目标平台时
+### <a name="用 make 为64位Linux编译">用 make 为64位Linux编译</a>
+> 希望编译产物适用于64位的Ubuntu的目标平台时
 >
 > C-SDK对其HAL和TLS都已有官方提供的参考实现, 因此可以完整编译出所有的库和例子程序
 
@@ -389,8 +389,6 @@ output/release/bin
     MODEL  :   x86
     ...
     ...
-
-*如果是为64位的OSX目标平台编译, 比如您希望例程直接在64位系统的苹果电脑上执行, 这一步需选择 `config.macos.make`*
 
 编译
 ---
@@ -424,8 +422,8 @@ output/release/bin
 | `linkkit-example-solo`  | 高级版(旧版API)的例程, 可演示 `linkkit_xxx()` 接口的使用
 | `mqtt-example`          | 基础版的例程, 可演示 `IOT_XXX()` 接口的使用
 
-### <a name="用 make 为32位Linux/OSX编译">用 make 为32位Linux/OSX编译</a>
-> 如果您编译SDK是在一台安装了32位 Linux/OSX 的机器上, 那么直接重复上面 [用 make 为64位Linux/OSX编译](#用 make 为64位Linux/OSX编译) 的步骤, 即可得到32位的库和例程
+### <a name="用 make 为32位Linux编译">用 make 为32位Linux编译</a>
+> 如果您编译SDK是在一台安装了32位 Linux 的机器上, 那么直接重复上面 [用 make 为64位Linux编译](#用 make 为64位Linux编译) 的步骤, 即可得到32位的库和例程
 >
 > 如果您是在安装了64位 `Ubuntu16.04` 的机器上, 需要编译出32位的库, 请按照下文操作
 
@@ -469,8 +467,6 @@ output/release/bin
     1) config.macos.make    3) config.ubuntu.x86
     2) config.rhino.make    4) config.win7.mingw32
     #? 3
-
-*如果是为32位的OSX目标平台编译, 比如您希望例程直接在32位系统的苹果电脑上执行, 这一步需修改和选择 `config.macos.make`*
 
 编译
 ---
@@ -567,7 +563,7 @@ output/release/bin
 ![image](https://code.aliyun.com/edward.yangx/public-docs/raw/master/images/win_mqtt_example.png)
 
 ## <a name="4.4 基于 make 交叉编译到嵌入式平台">4.4 基于 make 交叉编译到嵌入式平台</a>
-> 本节的示例适用于开发者的开发环境是 Ubuntu16.04 的Linux主机, 或者是Apple公司的 OSX 的MacOS的情况
+> 本节的示例适用于开发者的开发环境是 Ubuntu16.04 的Linux主机的情况
 
 **这些例子都是在64位主机上的执行情况, 推荐您和阿里开发者一样, 安装64位的操作系统**
 
@@ -951,12 +947,12 @@ output/release/bin
 + 它不是其它 `FEATURE_XXX` 的依赖之一
 + 对应的源码目录是 `src/services/awss`
 
-## <a name="4.7 在 Ubuntu/OSX 上使用 cmake 的编译示例">4.7 在 Ubuntu/OSX 上使用 cmake 的编译示例</a>
-> 本节的示例适用于开发者的开发环境是 Ubuntu16.04 的Linux主机, 或者是Apple公司的 OSX 的MacOS的情况
+## <a name="4.7 在 Ubuntu 上使用 cmake 的编译示例">4.7 在 Ubuntu 上使用 cmake 的编译示例</a>
+> 本节的示例适用于开发者的开发环境是 Ubuntu16.04 的Linux主机的情况
 
 **这些例子都是在64位主机上的执行情况, 推荐您和阿里开发者一样, 安装64位的操作系统**
 
-### <a name="用 cmake 为64位Linux/OSX编译">用 cmake 为64位Linux/OSX编译</a>
+### <a name="用 cmake 为64位Linux编译">用 cmake 为64位Linux编译</a>
 
 从 CMakeLists.txt 构建makefile
 ---
@@ -1010,7 +1006,7 @@ output/release/bin
 
     libiot_hal.a  libiot_sdk.a  libiot_tls.a
 
-### <a name="用 cmake 为32位Linux/OSX编译">用 cmake 为32位Linux/OSX编译</a>
+### <a name="用 cmake 为32位Linux编译">用 cmake 为32位Linux编译</a>
 
 修改 CMakeLists.txt 文件
 ---

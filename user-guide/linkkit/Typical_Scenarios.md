@@ -3,6 +3,7 @@
     * [7.1 MQTT站点配置](#7.1 MQTT站点配置)
         - [基础版](#基础版)
         - [高级版](#高级版)
+        - [AOS1.3.2版本连接海外站点](#AOS1.3.2版本连接海外站点)
     * [7.2 TSL静态集成和动态拉取](#7.2 TSL静态集成和动态拉取)
         - [TSL静态集成](#TSL静态集成)
         - [TSL动态拉取](#TSL动态拉取)
@@ -69,6 +70,20 @@
 **注意事项: 如果在阿里云物联网控制台申请的三元组与连接时使用的域名不符合, 连接站点时会出现认证错误(错误码-35)**
 
 *例如: 在阿里云物联网控制台的华东2站点申请的三元组, 在物联网套件中应该连接华东2(上海)站点*
+
+### <a name="AOS1.3.2版本连接海外站点">AOS1.3.2版本连接海外站点</a>
+在AOS1.3.2版本中连接到新加坡站点的配置方式有所不同, 新加坡站点会自动为设备分配最近的加速点
+
+只需要修改`example/linkkitapp/linkkitapp.mk`文件, 将默认配置:
+```
+GLOBAL_DEFINES += MQTT_DIRECT ALIOT_DEBUG IOTX_DEBUG USE_LPTHREAD HAL_ASYNC_API COAP_USE_PLATFORM_LOG
+```
+修改为:
+```
+GLOBAL_DEFINES += SUPPORT_SINGAPORE_DOMAIN ALIOT_DEBUG IOTX_DEBUG USE_LPTHREAD HAL_ASYNC_API COAP_USE_PLATFORM_LOG
+```
+
+然后重新编译固件烧录即可
 
 ## <a name="7.2 TSL静态集成和动态拉取">7.2 TSL静态集成和动态拉取</a>
 
