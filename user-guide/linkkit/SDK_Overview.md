@@ -316,6 +316,8 @@ productKey是物联网平台为产品颁发的唯一标识. 这个参数很重�
     - **新增OTA使用iTLS下载固件:** 在使能iTLS/ID2的情况下, 不再需要HTTPS下载固件
     - **新增WiFi配网功能开源发布:** 在 `src/services/awss` 中, 首次源码发布WiFi配网模块, 用户可自行交叉编译
     - **新增本地通信功能开源发布:** 在 `src/protocol/alcs` 中, 首次源码发布本地通信模块, 用户可自行交叉编译
++ 已知问题:
+    - 若要使用WiFi配网功能, 请将 `FEATURE_WIFI_AWSS_ENABLED = y` 一行从 `make.setting` 中移到到第一行, 否则会工作异常
 
 ### <a name="V2.2.0">V2.2.0</a>
 + 发布日期: 2018/08/06
