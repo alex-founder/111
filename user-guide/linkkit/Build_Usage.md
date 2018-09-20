@@ -752,6 +752,8 @@ output/release/bin
 >
 > 以下针对C-SDK的客户中, 较多出现的几种产品形态, 给出典型的配置文件, **并在注释中说明为什么这样配置**
 
+注: 2.2.1版本中若要使用WiFi配网功能, 请将 `FEATURE_WIFI_AWSS_ENABLED = y` 一行放置为 make.setting 的第一个配置项, 否则会工作异常
+
 ### <a name="不具有网关功能的WiFi模组">不具有网关功能的WiFi模组</a>
 这种场景下客户使用WiFi上行的MCU模组, 比如乐鑫ESP8266, 庆科MK3060等.
 
@@ -786,7 +788,7 @@ output/release/bin
     FEATURE_MQTT_COMM_ENABLED    = y          # 虽然CoAP更省电, 但不能做云端消息的及时下推, 所以目前GSM模组仍主要用MQTT的方式上云
     FEATURE_MQTT_DIRECT          = y          # MQTT直连效率更高, 对网络远慢于WiFi的GSM模组而言, 直连开关必须打开
     FEATURE_OTA_ENABLED          = y          # 一般GSM模组的客户, 也会使用阿里提供的固件升级服务
-    FEATURE_SDK_ENHANCE          = n          # GSM模组网速很慢, 资源较少, 所以这种模组的客户一般不会用高级版, 而只需要基础版的MQTT上云 
+    FEATURE_SDK_ENHANCE          = n          # GSM模组网速很慢, 资源较少, 所以这种模组的客户一般不会用高级版, 而只需要基础版的MQTT上云
     FEATURE_ENHANCED_GATEWAY     = n          # GSM模组一般不集成高级版(物模型)功能, 并且它也不会下联其它嵌入式设备分享MQTT上云通道
     FEATURE_WIFI_AWSS_ENABLED    = n          # GSM模组不通过WiFi协议连接公网, 因此关闭WiFi配网的开关
     FEATURE_SUPPORT_TLS          = y          # 绝大多数的客户都是用标准的TLS协议连接公网, 对GSM模组, 甚至可能连这个选项都关闭
