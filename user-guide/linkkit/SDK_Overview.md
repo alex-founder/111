@@ -243,7 +243,6 @@ productKey是物联网平台为产品颁发的唯一标识. 这个参数很重�
     |
     +-- src
     |   +-- board                           : 跨平台适配目录, 一个目标平台对应一个config.xxx.yyy文件
-    |   |   +-- config.macos.make           :     适配到OSX系统的编译配置文件
     |   |   +-- config.rhino.make           :     适配到AliOS Things系统的编译配置文件
     |   |   +-- config.ubuntu.x86           :     适配到Ubuntu系统的编译配置文件
     |   |   +-- config.win7.mingw32         :     适配到Win7/Win10系统的编译配置文件
