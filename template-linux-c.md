@@ -1,10 +1,10 @@
 ---
-platform: {Linux 3.18.20}
+platform: {Linux kernel 3.18.20}
 device: {N720}
 language: c
 ---
 
-Run a simple C sample on {enter your device name here} device running {enter the OS name running on device}
+Run a simple C sample on {N720} device running {Linux kernel 3.18.20}
 ===
 ---
 
