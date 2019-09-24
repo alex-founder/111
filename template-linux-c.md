@@ -34,12 +34,18 @@ You should have the following items ready before beginning the process:
 
 -   [Download IoT SDK](https://github.com/Azure/azure-iot-sdk-c)
 -   Environment: OS: Ubuntu 64-bit OS, version 12.04 or 14.04
--   Get a N720 EVB device(sales@neoway.com)
--   Get N720 firmware，you can send a mail to sales@neoway.com
+-   Get a N720 EVB device, send a mail to sales@neoway.com
+-   Get N720 firmware and debug tools, send a mail to sales@neoway.com
 
 <a name="PrepareDevice"></a>
 # Step 2: Prepare your Device
--   {{Write down the instructions required to setup, configure and connect your device. Please use external links when possible pointing to your own page with device preparation steps.}}
+##   2.1  Debugging Environment 
+-   OS: Windows 7 
+-   Debugging tool: Android Debug Bridge (ADB) version 1.0.31 (Windows OS is recommended). 
+-   Check /tool/fastboot.rar in the SDK package. 
+-   Install USB drivers for Windows: Android_usb_windows_20171016.rar. 
+-   For how to install these drivers, see Neoway_N720_USB_Driver_Installation_Guide_(Windows) 
+-   The installation files are saved in the /tool/ directory of the SDK package
 
 <a name="Build"></a>
 # Step 3: Build and Run the sample
