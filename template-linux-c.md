@@ -34,7 +34,7 @@ You should have the following items ready before beginning the process:
 
 -   [Download IoT SDK](https://github.com/Azure/azure-iot-sdk-c)
 -   Environment: OS: Ubuntu 64-bit OS, version 12.04 or 14.04
--   Get a N720 EVB device，you can send a mail to sales@neoway.com
+-   Get a N720 EVB device(sales@neoway.com)
 -   Get N720 firmware，you can send a mail to sales@neoway.com
 
 <a name="PrepareDevice"></a>
