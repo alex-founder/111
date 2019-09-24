@@ -47,6 +47,8 @@ You should have the following items ready before beginning the process:
 -   For how to install these drivers, see Neoway_N720_USB_Driver_Installation_Guide_(Windows) 
 -   The installation files are saved in the /tool/ directory of the SDK package
 
+##   2.2   
+
 <a name="Build"></a>
 # Step 3: Build and Run the sample
 
