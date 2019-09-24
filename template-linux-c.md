@@ -22,7 +22,7 @@ Run a simple C sample on {N720} device running {Linux kernel 3.18.20}
 
 **About this document**
 
-This document describes how to connect {enter your device name here} device running {enter the OS name running on device} with Azure IoT SDK. This multi-step process includes:
+This document describes how to connect {N720} device running {Linux kernel 3.18.20} with Azure IoT SDK. This multi-step process includes:
 -   Configuring Azure IoT Hub
 -   Registering your IoT device
 -   Build and deploy Azure IoT SDK on device
