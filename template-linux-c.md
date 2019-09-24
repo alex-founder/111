@@ -1,6 +1,6 @@
 ---
-platform: {enter the OS name running on device}
-device: {enter your device name here}
+platform: {Linux 3.18.20}
+device: {N720}
 language: c
 ---
 
