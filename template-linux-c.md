@@ -39,7 +39,13 @@ You should have the following items ready before beginning the process:
 
 <a name="PrepareDevice"></a>
 # Step 2: Prepare your Device
-##   2.1  Debugging Environment 
+##   2.1  Compilation Environment 
+-   OS: Ubuntu 64-bit OS, version 12.04 or 14.04 
+-   Compiler: neoway-arm-oe-linux.tar.gz 
+-   The tool package is saved in the /tool/ directory of the SDK package.  
+-   Decompress this package on the computer running Ubuntu and initialize the environment variables of the system.  
+tool
+##   2.2  Debugging Environment 
 -   OS: Windows 7 
 -   Debugging tool: Android Debug Bridge (ADB) version 1.0.31 (Windows OS is recommended). 
 -   Check /tool/fastboot.rar in the SDK package. 
@@ -47,7 +53,6 @@ You should have the following items ready before beginning the process:
 -   For how to install these drivers, see Neoway_N720_USB_Driver_Installation_Guide_(Windows) 
 -   The installation files are saved in the /tool/ directory of the SDK package
 
-##   2.2   
 
 <a name="Build"></a>
 # Step 3: Build and Run the sample
