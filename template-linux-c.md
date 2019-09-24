@@ -32,11 +32,10 @@ This document describes how to connect {N720} device running {Linux kernel 3.18.
 
 You should have the following items ready before beginning the process:
 
--   [Prepare your development environment][setup-devbox-linux]
--   [Setup your IoT hub][lnk-setup-iot-hub]
--   [Provision your device and get its credentials][lnk-manage-iot-hub]
--   {enter your device name here} device.
--   {{Please specify if any other software(s) or hardware(s) are required.}}
+-   [Download IoT SDK][https://github.com/Azure/azure-iot-sdk-c]
+-   Environment: OS: Ubuntu 64-bit OS, version 12.04 or 14.04
+-   Get a N720 EVB device，you can send a mail to sales@neoway.com
+-   Get N720 firmware，you can send a mail to sales@neoway.com
 
 <a name="PrepareDevice"></a>
 # Step 2: Prepare your Device
